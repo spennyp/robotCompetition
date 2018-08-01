@@ -1,7 +1,7 @@
-// Sensors.h
+// Helpers.h
 
-#ifndef _SENSORS_h
-#define _SENSORS_h
+#ifndef _HELPERS_h
+#define _HELPERS_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -9,10 +9,21 @@
 	#include "WProgram.h"
 #endif
 
+
+// Sensors
+
 extern bool clawIRTriggered();
 extern bool foundCliff();
 extern bool frontTouchSensorTriggered();
 extern bool topHallTriggered();
 extern bool bottomHallTriggered();
+
+
+// RunHelpers
+
+extern void activateDumper();
+extern void resetDumper();
+extern void deployBridge();
+extern void resetBridge();
 
 #endif

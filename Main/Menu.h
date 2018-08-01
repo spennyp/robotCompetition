@@ -11,7 +11,8 @@
 	#include "WProgram.h"
 #endif
 
-extern void menu();
+// Configuration Menu
+extern void configurationMenu();
 extern MenuItem menuItems[];
 
 // Add menu items here
@@ -22,5 +23,13 @@ extern MenuItem pidThreshold;
 extern MenuItem cliffThreshold;
 extern MenuItem delayPerDegreeTurn;
 extern MenuItem winchSpeed;
+
+
+// Run Menu
+
+extern void runMenu();
+extern String runBot;
+extern String runSystemTest;
+extern String runDiagonistics;
 
 #endif

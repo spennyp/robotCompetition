@@ -1,9 +1,11 @@
 // Test.cpp
 
-#include "Sensors.h"
+#include "Test.h"
 #include "Globals.h"
+#include "Helpers.h"
 #include <Arduino.h>
 #include "Menu.h"
+
 
 
 void systemDiagnostics() {
@@ -24,7 +26,7 @@ void systemDiagnostics() {
         if (stopbutton()) {
 			delay(100);
 			if (stopbutton()) {
-				LCD.clear(); LCD.print("Leaving diagnositcs");
+				LCD.clear(); LCD.print("Leaving "); LCD.setCursor(0, 1); LCD.print("Diagnositcs");
 				delay(1000);
 				return;
 			}
@@ -33,25 +35,50 @@ void systemDiagnostics() {
 }
 
 void testFullSystem() {
+	LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+	while(!startbutton()) {
+		testPidQRDSensors();
+		delay(100);
+	}
+	LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+	while(!stopbutton()) {
+		testCliffQRD();
+		delay(100);
+	}
+	LCD.clear(); LCD.print("Testing Dumper"); delay(1000);
+	while(!startbutton()) {
+		testDump();
+	}
+	LCD.clear(); LCD.print("Testing Claw"); delay(1000);
+	while(!stopbutton()) {
+		testClaw();
+	}
+	LCD.clear(); LCD.print("Leaving testing"); delay(1000);
 
 }
 
-void testQRDSensors() {
+void testPidQRDSensors() {
+	LCD.clear(); LCD.print("FarQRD: "); LCD.print(analogRead(farTapeFollowQRD));
+	LCD.setCursor(0,1); LCD.print("NearQRD: "); LCD.print(analogRead(nearTapeFollowQRD));
+}
 
+void testCliffQRD() {
+	LCD.clear(); LCD.print("CliffQRD: "); LCD.print(analogRead(cliffQRD));
 }
 
 void testDump() {
-	// reset();
-	// LCD.clear(); LCD.print("Reset");
-	// delay(2000);
-	// activateDumper();
-	// LCD.clear(); LCD.print("Dump");
-	// delay(2000);
+	LCD.clear(); LCD.print("Reset");
+	resetDumper();
+	delay(2000);
+	LCD.clear(); LCD.print("Dump");
+	activateDumper();
+	delay(2000);
+
 }
 
-void testClaw() {
+void testClaw() {	
 	// bool triggered = clawIRTriggered();
-	// LCD.clear(); LCD.print(triggered);
+	// LCD.clear(); LCD.print("Claw IR triggered: "); LCD.print(triggered);
 	// if(triggered) {
 	// 	claw.grab();
 	// 	delay(1000);

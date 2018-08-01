@@ -12,14 +12,7 @@
 // API
 extern void run();
 
-// Helpers
 void reset();
-void deployBridge();
-void activateDumper();
-void bottomBotPlankCheck();
 void codeRed();
-
-void testDump();
-void testClaw();
 
 #endif

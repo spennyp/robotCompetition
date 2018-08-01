@@ -12,10 +12,11 @@
 extern void systemDiagnostics();
 extern void testFullSystem();
 
-extern void testDump();
-extern void testClaw();
-extern void testTouch();
-extern void testPid();
-extern void testBridge();
+void testPidQRDSensors();
+void testCliffQRD();
+void testDump();
+void testClaw();
+void testTouch();
+void testBridge();
 
 #endif

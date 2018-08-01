@@ -2,7 +2,7 @@
 
 #include "Claw.h"
 #include "Globals.h"
-#include "Sensors.h"
+#include "Helpers.h"
 
 // TODO: Figure out what these 6 values should be
 const int clawServoOpenAngle = 180;

@@ -67,8 +67,8 @@ struct ServoOutput bottomBridgeServo(servo0, digitalOn, digitalOn);
 
 
 // Digital pins
-extern int topHall = 13;
-extern int bottomHall = 14;
+extern int bottomHall = 13;
+extern int topHall = 14;
 extern int frontTouchSensor = 15;
 
 

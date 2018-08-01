@@ -17,13 +17,13 @@ class Claw {
         void close();
         void dump();
         int numberOfTeddies;
+        friend class Test;
     public:
         Claw();
         void grab();
         void switchToTopBot();
         void reset();
         void poll();
-
 };
 
 #endif
