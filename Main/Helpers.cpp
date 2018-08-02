@@ -7,7 +7,7 @@
 // Sensors
 
 bool clawIRTriggered() {
-	return digitalRead(clawIR);
+	return (analogRead(clawIR) < clawIRThreshold.value);
 }
 
 bool foundCliff() {
@@ -15,8 +15,8 @@ bool foundCliff() {
 }
 
 bool frontTouchSensorTriggered() {
-    return digitalRead(frontTouchSensor);
-}
+    return !digitalRead(frontTouchSensor);
+} 
 
 bool topHallTriggered() {
     return !digitalRead(topHall);
@@ -29,38 +29,39 @@ bool bottomHallTriggered() {
 
 // RunHelpers
 
-// Reset constants
-const int bottomBridgeServoResetPosition = 90;
-const int topBridgeLowerServoResetPosition = 0;
-const int topBridgeUpperServoResetPosition = 90;
-const int leftDumpServoResetPosition = 160;
-const int rightDumpServoResetPosition = 10;
-
 // Deploy constants
 const int bottomBridgeServoDeployPosition = 150;
-const int topBridgeLowerServoDeployPosition = 90;
-const int topBridgeUpperServoDeployPosition = 0;
-const int dumpDeployAngle = 150;
+const int leftBridgeServoDeployPosition = 0;
+const int rightBridgeServoDeployPosition = 150;
+const int dumpDeployAngle = 160;
 
-const int bridgeDropDelay = 2000; // [ms]
+// Reset constants
+const int bottomBridgeServoResetPosition = 45;
+const int leftBridgeServoResetPosition = 100;
+const int rightBridgeServoResetPosition = 45;
+const int leftDumpServoResetPosition = 10;
+const int rightDumpServoResetPosition = 170;
 
 void activateDumper() {
-	// setServo(storageDumpServoLeft, leftDumpServoResetPosition - dumpDeployAngle, false);
-	// setServo(storageDumpServoRight, rightDumpServoResetPosition + dumpDeployAngle, false);
+	setServo(leftStorageDumpServo, leftDumpServoResetPosition + dumpDeployAngle);
+	setServo(rightStorageDumpServo, rightDumpServoResetPosition - dumpDeployAngle);
 }
 
 void resetDumper() {
-
+	setServo(leftStorageDumpServo, leftDumpServoResetPosition);
+	setServo(rightStorageDumpServo, rightDumpServoResetPosition);
 }
 
 void deployBridge() {
-	// setServo(topBridgeLowerServo, topBridgeLowerServoDeployPosition);
-	// delay(bridgeDropDelay / 2);
-	// setServo(topBridgeUpperServo, topBridgeUpperServoDeployPosition);
-	// delay(bridgeDropDelay);
+	setServo(bottomBridgeServo, bottomBridgeServoDeployPosition);
+	delay(1000);
+	setServo(leftBridgeServo, leftBridgeServoDeployPosition);
+	setServo(rightBridgeServo, rightBridgeServoDeployPosition);
 }
 
 void resetBridge() {
-
+	setServo(bottomBridgeServo, bottomBridgeServoResetPosition);
+	delay(1000);
+	setServo(leftBridgeServo, leftBridgeServoResetPosition);
+	setServo(rightBridgeServo, rightBridgeServoResetPosition);
 }
-

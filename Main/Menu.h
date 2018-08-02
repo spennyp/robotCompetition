@@ -22,7 +22,9 @@ extern MenuItem derivativeGain;
 extern MenuItem pidThreshold;
 extern MenuItem cliffThreshold;
 extern MenuItem delayPerDegreeTurn;
-extern MenuItem winchSpeed;
+extern MenuItem winchUpSpeed;
+extern MenuItem winchDownSpeed;
+extern MenuItem clawIRThreshold;
 
 
 // Run Menu

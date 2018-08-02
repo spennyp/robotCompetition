@@ -14,6 +14,7 @@ extern void testFullSystem();
 
 void testPidQRDSensors();
 void testCliffQRD();
+void testClawIR();
 void testDump();
 void testClaw();
 void testTouch();

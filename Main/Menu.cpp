@@ -19,8 +19,11 @@ MenuItem derivativeGain = MenuItem("D-gain");
 MenuItem pidThreshold = MenuItem("PID-thresh");
 MenuItem cliffThreshold = MenuItem("Cliff-thresh");
 MenuItem delayPerDegreeTurn = MenuItem("Delay/degTurn");
-MenuItem winchSpeed = MenuItem("winchSpeed");
-MenuItem configurationMenuItems[] = { motorSpeed, proportionalGain, derivativeGain, pidThreshold, delayPerDegreeTurn, winchSpeed };
+MenuItem winchUpSpeed = MenuItem("winchUSpeed");
+MenuItem winchDownSpeed = MenuItem("winchDSpeed");
+
+MenuItem clawIRThreshold = MenuItem("clawIRThresh");
+MenuItem configurationMenuItems[] = { motorSpeed, proportionalGain, derivativeGain, pidThreshold, delayPerDegreeTurn, winchUpSpeed, winchDownSpeed, clawIRThreshold };
 
 void configurationMenu() {
 	LCD.clear(); LCD.home();

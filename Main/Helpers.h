@@ -19,7 +19,7 @@ extern bool topHallTriggered();
 extern bool bottomHallTriggered();
 
 
-// RunHelpers
+// Run Helpers
 
 extern void activateDumper();
 extern void resetDumper();

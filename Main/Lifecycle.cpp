@@ -5,10 +5,9 @@
 #include "Helpers.h"
 #include "MotorWheel.h"
 #include "Claw.h"
-#include "Test.h"
 
-Claw claw;
 MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
+Claw claw;
 
 int cliffCount = 0;
 
@@ -16,21 +15,57 @@ int cliffCount = 0;
 void run() {
 	reset();
 	unsigned long prevLoopStartTime = millis();
-	int numberOfTeddiesGrabbed = 0;
-	systemDiagnostics();
-
 
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 
-	reset();
+	// Temporary for testing top bot only
+	int numberOfTeddiesGrabbed = 2;
+	bool onBottomBot = false;
+	claw.switchToTopBot();
+	// reset();
 	delay(2000);
+	motorWheel.forward();
 
 	while(true) {
 		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 
-		// TODO: Add run code
-		systemDiagnostics();
+		// TODO: Write this
+
+		// if(onBottomBot && digitalRead(bottomBotTransitionPin)) {
+		// 	onBottomBot = false;
+		// 	motorWheel.forward(100);
+		// } 
+
+		LCD.clear(); LCD.print("Trig: "); LCD.print(clawIRTriggered());
+		if(clawIRTriggered()) {
+			if(onBottomBot) {
+				// runClawForBottomBot();
+			} else {
+				motorWheel.stop();
+				claw.grab();
+			}
+			numberOfTeddiesGrabbed ++;
+		}
+
+
+		motorWheel.poll();
+		if(claw.poll()) {
+			LCD.clear(); LCD.print("Hit here");
+			delay(20000);
+			if(numberOfTeddiesGrabbed == 3) {
+				delay(20000);
+				motorWheel.turnLeft(90, 100);
+				motorWheel.forward();
+				delay(100);
+			} else if(numberOfTeddiesGrabbed == 4) {
+				motorWheel.turnLeft(90);
+				motorWheel.forward();
+				while(!foundCliff()) {}
+				motorWheel.stop();
+			}
+			motorWheel.runWithPID = true;
+		}
 
 		// TODO: Remove this for competition
 		if (stopbutton()) {
@@ -42,6 +77,10 @@ void run() {
 			}
 		}
 	}
+}
+
+void runClawForBottomBot() {
+	// TODO: Add code to tell bottom bot to stop and to trigger claw when in position
 }
 
 // If all else fails
@@ -59,7 +98,10 @@ void codeRed() {
 }
 
 void reset() {
-
+	motorWheel.runWithPID = true;
+	// claw.reset();
+	resetBridge();
+	resetDumper();
 }
 
 

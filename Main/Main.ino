@@ -21,9 +21,9 @@ void setup() {
 
 void loop() {
 	LCD.clear(); LCD.home();
-	LCD.print("Start -> Run Menu");
+	LCD.print("Start -> RunMenu");
 	LCD.setCursor(0, 1);
-	LCD.print("Stop -> Config Menu");
+	LCD.print("Stop -> ConMenu");
 	delay(100);
 
 	if (stopbutton()) {

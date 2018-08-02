@@ -13,6 +13,8 @@
 extern void run();
 
 void reset();
+void runClawForBottomBot();
+void runTopBotOnly();
 void codeRed();
 
 #endif

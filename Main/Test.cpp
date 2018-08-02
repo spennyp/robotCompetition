@@ -5,8 +5,9 @@
 #include "Helpers.h"
 #include <Arduino.h>
 #include "Menu.h"
+#include "Claw.h"
 
-
+Claw testClawInstance;
 
 void systemDiagnostics() {
     LCD.clear(); LCD.print("Diagnostics"); 
@@ -20,8 +21,8 @@ void systemDiagnostics() {
         Serial.print("Far QRD: "); Serial.println(analogRead(farTapeFollowQRD));
         Serial.print("Near QRD: "); Serial.println(analogRead(nearTapeFollowQRD));
         Serial.print("Cliff QRD: "); Serial.println(analogRead(cliffQRD));
-        Serial.print("Claw IR: "); Serial.println(clawIRTriggered());
-        delay(4000);
+        Serial.print("Claw IR: "); Serial.println(analogRead(clawIR));
+        delay(1000);
 
         if (stopbutton()) {
 			delay(100);
@@ -35,26 +36,49 @@ void systemDiagnostics() {
 }
 
 void testFullSystem() {
-	LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
-	while(!startbutton()) {
-		testPidQRDSensors();
-		delay(100);
-	}
-	LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+	// LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+	// while(!startbutton()) {
+	// 	testPidQRDSensors();
+	// 	delay(100);
+	// }
+	// LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+	// while(!stopbutton()) {
+	// 	testCliffQRD();
+	// 	delay(100);
+	// }
+	// LCD.clear(); LCD.print("Testing Claw IR "); LCD.setCursor(0, 1); LCD.print("Detector"); delay(1000);
+	// while(!stopbutton()) {
+	// 	testClawIR();
+	// 	delay(100);
+	// }
+	// LCD.clear(); LCD.print("Testing Dumper"); delay(1000);
+	// while(!startbutton()) {
+	// 	testDump();
+	// }
+
+	LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
+	testClawInstance = Claw();
+	unsigned long prevLoopStartTime = millis();
+	testClawInstance.reset();
 	while(!stopbutton()) {
-		testCliffQRD();
-		delay(100);
-	}
-	LCD.clear(); LCD.print("Testing Dumper"); delay(1000);
-	while(!startbutton()) {
-		testDump();
-	}
-	LCD.clear(); LCD.print("Testing Claw"); delay(1000);
-	while(!stopbutton()) {
+		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+		prevLoopStartTime = millis();
 		testClaw();
 	}
-	LCD.clear(); LCD.print("Leaving testing"); delay(1000);
 
+	LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
+	testClawInstance.switchToTopBot();
+	while(!stopbutton()) {
+		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+		prevLoopStartTime = millis();
+		testClaw();
+	}
+
+	// LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
+	// while(!startbutton()) {
+	// 	testBridge();
+	// }
+	LCD.clear(); LCD.print("Leaving testing"); delay(1000);
 }
 
 void testPidQRDSensors() {
@@ -66,29 +90,36 @@ void testCliffQRD() {
 	LCD.clear(); LCD.print("CliffQRD: "); LCD.print(analogRead(cliffQRD));
 }
 
+void testClawIR() {
+	LCD.clear(); LCD.print("ClawIR: "); LCD.print(analogRead(clawIR));
+}
+
 void testDump() {
-	LCD.clear(); LCD.print("Reset");
+	LCD.clear(); LCD.print("Reset"); LCD.setCursor(0, 1); LCD.print("start -> next");
 	resetDumper();
 	delay(2000);
-	LCD.clear(); LCD.print("Dump");
+	LCD.clear(); LCD.print("Dump"); LCD.setCursor(0, 1); LCD.print("start -> next");
 	activateDumper();
 	delay(2000);
-
 }
 
 void testClaw() {	
-	// bool triggered = clawIRTriggered();
-	// LCD.clear(); LCD.print("Claw IR triggered: "); LCD.print(triggered);
-	// if(triggered) {
-	// 	claw.grab();
-	// 	delay(1000);
-	// 	setServo(clawDumpServo, 8);
-	// 	delay(1000);
-	// 	setServo(clawGrabServo, 18); 
-	// 	delay(1000);
-	// 	setServo(clawDumpServo, 125);
-	// 	delay(1000);
-	// }
+	bool triggered = clawIRTriggered();
+	LCD.clear(); LCD.print("IR Triggered: "); LCD.print(triggered);
+	LCD.setCursor(0, 1); LCD.print("stop -> next");
+	if(triggered) {
+		testClawInstance.grab();
+	}
+	testClawInstance.poll();
+}
+
+void testBridge() {
+	LCD.clear(); LCD.print("Reset"); LCD.setCursor(0, 1); LCD.print("start -> end");
+	resetBridge();
+	delay(15000);
+	LCD.clear(); LCD.print("Deploy"); LCD.setCursor(0, 1); LCD.print("start -> end");
+	deployBridge();
+	delay(2000);
 }
 
 

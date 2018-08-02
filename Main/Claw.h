@@ -16,14 +16,15 @@ class Claw {
         void open();
         void close();
         void dump();
-        int numberOfTeddies;
-        friend class Test;
+        friend void testClaw();
+        bool bottomBot;
+        bool grabbed;
     public:
         Claw();
         void grab();
         void switchToTopBot();
         void reset();
-        void poll();
+        bool poll();
 };
 
 #endif

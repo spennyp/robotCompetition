@@ -58,7 +58,8 @@ void MotorWheel::reverse() {
 
 void MotorWheel::stop() {
 	runWithPID = false;
-	motor.stop_all();
+	motor.stop(rightMotor);
+	motor.stop(leftMotor);
 }
 
 
