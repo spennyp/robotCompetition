@@ -3,11 +3,11 @@
 #include "Test.h"
 #include "Globals.h"
 #include "Helpers.h"
-#include <Arduino.h>
-#include "Menu.h"
+#include "MotorWheel.h"
 #include "Claw.h"
 
 Claw testClawInstance;
+MotorWheel testMotorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
 
 void systemDiagnostics() {
     LCD.clear(); LCD.print("Diagnostics"); 
@@ -36,48 +36,68 @@ void systemDiagnostics() {
 }
 
 void testFullSystem() {
-	// LCD.clear(); LCD.print("Testing PID "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+	unsigned long prevLoopStartTime = millis();
+
+	// LCD.clear(); LCD.print("Test edgeSensors"); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
 	// while(!startbutton()) {
 	// 	testPidQRDSensors();
 	// 	delay(100);
 	// }
-	// LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+
+	// LCD.clear(); LCD.print("Testing PID"); LCD.setCursor(0, 1); LCD.print("stop -> next"); delay(1000);
+	// testMotorWheel.runWithPID = true;
 	// while(!stopbutton()) {
-	// 	testCliffQRD();
-	// 	delay(100);
+	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+	// 	prevLoopStartTime = millis();
+	// 	testMotorWheel.poll();
 	// }
+
+	// LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
+	// while(!startbutton()) {
+	// 	testTurning();
+	// }
+
 	// LCD.clear(); LCD.print("Testing Claw IR "); LCD.setCursor(0, 1); LCD.print("Detector"); delay(1000);
 	// while(!stopbutton()) {
 	// 	testClawIR();
 	// 	delay(100);
 	// }
+
+	// LCD.clear(); LCD.print("Testing Cliff "); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
+	// while(!startbutton()) {
+	// 	testCliffQRD();
+	// 	delay(100);
+	// }
+
 	// LCD.clear(); LCD.print("Testing Dumper"); delay(1000);
 	// while(!startbutton()) {
 	// 	testDump();
 	// }
 
-	LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
-	testClawInstance = Claw();
-	unsigned long prevLoopStartTime = millis();
-	testClawInstance.reset();
-	while(!stopbutton()) {
-		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
-		prevLoopStartTime = millis();
-		testClaw();
-	}
 
-	LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
-	testClawInstance.switchToTopBot();
-	while(!stopbutton()) {
-		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
-		prevLoopStartTime = millis();
-		testClaw();
-	}
-
-	// LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
-	// while(!startbutton()) {
-	// 	testBridge();
+	// LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
+	// testClawInstance = Claw();
+	// unsigned long prevLoopStartTime = millis();
+	// testClawInstance.reset();
+	// while(!stopbutton()) {
+	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+	// 	prevLoopStartTime = millis();
+	// 	testClaw();
 	// }
+
+	// LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
+	// testClawInstance.switchToTopBot();
+	// while(!stopbutton()) {
+	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+	// 	prevLoopStartTime = millis();
+	// 	testClaw();
+	// }
+
+	LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
+	while(!startbutton()) {
+		testBridge();
+	}
+
 	LCD.clear(); LCD.print("Leaving testing"); delay(1000);
 }
 
@@ -111,6 +131,20 @@ void testClaw() {
 		testClawInstance.grab();
 	}
 	testClawInstance.poll();
+}
+
+void testTurning() {
+	// testMotorWheel.turnRight(90);
+	// delay(1000);
+	// if(startbutton()) { return; }
+	testMotorWheel.turnLeft(90);
+	delay(1000);
+	// if(startbutton()) { return; }
+	// testMotorWheel.turnRight(180);
+	// delay(1000);
+	// if(startbutton()) { return; }
+	// testMotorWheel.turnLeft(180);
+	// delay(1000);
 }
 
 void testBridge() {

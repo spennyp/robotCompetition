@@ -15,7 +15,7 @@ class MotorWheel {
 		uint16_t motorSpeed;
 		PID pid;
 	public:
-		MotorWheel(MenuItem speed, PID pid);
+		MotorWheel(MenuItem _motorSpeed, PID pid);
 		void turnLeft(int angle, int speed = 0, bool backup = true);
 		void turnRight(int angle,  int speed = 0, bool backup = true);
 		void forward(int speed = 0);

@@ -5,8 +5,8 @@
 
 const int defualtTurnSpeed = 150;
 
-MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
-	motorSpeed = speed.value;
+MotorWheel::MotorWheel(MenuItem _motorSpeed, PID pid) : pid(pid) {
+	motorSpeed = _motorSpeed.value;
 	runWithPID = true;
 }
 
@@ -17,7 +17,7 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 	motor.speed(leftMotor, -turnSpeed);
 	if(backup) {
 		motor.speed(rightMotor, -turnSpeed);
-		delay(400);
+		delay(200);
 	}
 	motor.speed(rightMotor, turnSpeed);
 	delay(angle * delayPerDegreeTurn.value);
@@ -31,7 +31,7 @@ void MotorWheel::turnRight(int angle, int speed, bool backup) {
 	motor.speed(rightMotor, -turnSpeed);
 	if(backup) {
 		motor.speed(leftMotor, -turnSpeed);
-		delay(400);
+		delay(200);
 	}
 	motor.speed(leftMotor, turnSpeed);
 	delay(angle * delayPerDegreeTurn.value);
@@ -68,6 +68,7 @@ void MotorWheel::stop() {
 void MotorWheel::poll() {
 	if(runWithPID) {
 		int err = pid.getError();
+		LCD.clear(); LCD.print("Speed: "); LCD.print(err);
 
 		// when err < 0 turns right. when err > 0 turns left
 		motor.speed(leftMotor, motorSpeed - err);

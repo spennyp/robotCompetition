@@ -25,6 +25,7 @@ void run() {
 	// reset();
 	delay(2000);
 	motorWheel.forward();
+	
 
 	while(true) {
 		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
@@ -43,26 +44,50 @@ void run() {
 				// runClawForBottomBot();
 			} else {
 				motorWheel.stop();
+				if(numberOfTeddiesGrabbed == 3) { // Drive forward to get the 4th teddy into the claw better
+					motorWheel.forward();
+					delay(800);
+					motorWheel.stop();
+				}
 				claw.grab();
 			}
 			numberOfTeddiesGrabbed ++;
 		}
 
-
 		motorWheel.poll();
 		if(claw.poll()) {
-			LCD.clear(); LCD.print("Hit here");
-			delay(20000);
 			if(numberOfTeddiesGrabbed == 3) {
-				delay(20000);
-				motorWheel.turnLeft(90, 100);
-				motorWheel.forward();
-				delay(100);
-			} else if(numberOfTeddiesGrabbed == 4) {
-				motorWheel.turnLeft(90);
 				motorWheel.forward();
 				while(!foundCliff()) {}
 				motorWheel.stop();
+				delay(500);
+				// motorWheel.reverse();
+				// delay(00);
+				motorWheel.stop();
+				delay(800);
+				motorWheel.turnLeft(80);
+				delay(2000);
+				// delay(20000);
+				// motorWheel.forward();
+				// delay(200);
+				// motorWheel.stop();
+				// LCD.clear(); LCD.print("Hit here");
+				// delay(20000);
+			} else if(numberOfTeddiesGrabbed == 4) {
+				delay(2000);
+				motorWheel.forward();
+				while(!foundCliff()) {}
+				motorWheel.stop();
+				delay(1000);
+				motorWheel.turnLeft(90);
+				delay(1000);
+				motorWheel.forward();
+				while(!foundCliff()) {}
+				motorWheel.stop();
+				delay(20000);
+				
+				// while(!foundCliff()) {}
+				// motorWheel.stop();
 			}
 			motorWheel.runWithPID = true;
 		}
