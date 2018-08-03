@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include <phys253.h>
+#include "Globals.h"
 
 void setup() {
 	#include <phys253setup.txt>
@@ -16,6 +17,7 @@ void setup() {
 	pinMode(5, OUTPUT);
 	pinMode(6, OUTPUT);
 	pinMode(7, OUTPUT);
+	digitalWrite(stopPin, HIGH);
 	delay(1000);
 }
 

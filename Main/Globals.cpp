@@ -56,6 +56,7 @@ int bottomHall = 13;
 int topHall = 14;
 int frontTouchSensor = 15;
 int bottomBotTransitionPin = 8;
+int stopPin = 7;
 
 
 // Analog Pins

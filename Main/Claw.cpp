@@ -29,7 +29,7 @@ void Claw::grab() {
     delay(500);
     if(bottomBot) {
         raise();
-        delay(200); // time to leave bottom limit switch before next poll
+        delay(500); // time to leave bottom limit switch before next poll
     }
 }
 
@@ -41,13 +41,15 @@ void Claw::switchToTopBot() {
 
 void Claw::reset() {
     int normalAngle = (bottomBot) ? dumpServoNormalAngleBottomBot : dumpServoNormalAngleTopBot;
-    if(bottomBot && !bottomHallTriggered()) {
-        close();
-        setServo(clawDumpServo, transitionAngle);
-        delay(1000);
-        lower();
-        while(!bottomHallTriggered()) {} 
-        motor.speed(winchMotor, 0);
+    if(bottomBot) {
+        if (!bottomHallTriggered()) {
+            close();
+            setServo(clawDumpServo, transitionAngle);
+            delay(1000);
+            lower();
+            while(!bottomHallTriggered()) {} 
+            motor.speed(winchMotor, 0);
+        }
     } else if (!topHallTriggered()){
         raise();
         while(!topHallTriggered()) {} 
@@ -56,6 +58,7 @@ void Claw::reset() {
     setServo(clawDumpServo, normalAngle);
     delay(500);
     open();
+    grabbed = false;
     delay(500);
 }
 
@@ -74,8 +77,6 @@ bool Claw::poll() {
                 lower();
             }
             return true;
-        } else {
-            open();
         }
     }
     return false;
