@@ -48,12 +48,12 @@ void run() {
 			if(onBottomBot) {
 				foundTeddyWithBottom();
 			} else {
-				motorWheel.stop();
-				if(numberOfTeddiesGrabbed == 3) { // Drive forward to get the 4th teddy into the claw better
-					motorWheel.forward();
-					delay(800);
-					motorWheel.stop();
-				}
+				// motorWheel.stop();
+				// if(numberOfTeddiesGrabbed == 3) { // Drive forward to get the 4th teddy into the claw better
+				// 	motorWheel.forward();
+				// 	delay(800);
+				// 	motorWheel.stop();
+				// }
 			}
 			claw.grab();
 			numberOfTeddiesGrabbed ++;
@@ -67,7 +67,7 @@ void run() {
 				digitalWrite(communicationOut, HIGH);
 				if(numberOfTeddiesGrabbed == 1) {
 					claw.raiseForBridgeDrop();
-					while(digitalRead(communicationIn) == LOW); // stays up until the bridge is crossed
+					while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
 					claw.reset();
 				} else if(numberOfTeddiesGrabbed == 2) {
 					claw.switchToTopBot();

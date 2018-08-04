@@ -62,6 +62,14 @@ void Claw::reset() {
     delay(500);
 }
 
+void Claw::raiseForBridgeDrop() {
+    close();
+    delay(500);
+    raise();
+    while(!topHallTriggered()) {}
+    motor.speed(winchMotor, 0);
+}
+
 
 // Lifecycle
 

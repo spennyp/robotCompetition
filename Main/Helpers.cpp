@@ -67,11 +67,11 @@ void resetBridge() {
 }
 
 void startBottomBot() {
-	digitalWrite(stopPin, LOW);
+	digitalWrite(communicationOut, LOW);
 	delay(250);
-	digitalWrite(stopPin, HIGH);
+	digitalWrite(communicationOut, HIGH);
 }
 
 void foundTeddyWithBottom() {
-	digitalWrite(stopPin, LOW); // Writes low and stays there until done grabbing
+	digitalWrite(communicationOut, LOW); // Writes low and stays there until done grabbing
 }
