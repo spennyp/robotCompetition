@@ -51,6 +51,8 @@ void Claw::reset() {
             motor.speed(winchMotor, 0);
         }
     } else if (!topHallTriggered()){
+        close();
+        delay(500);
         raise();
         while(!topHallTriggered()) {} 
         motor.speed(winchMotor, 0);
