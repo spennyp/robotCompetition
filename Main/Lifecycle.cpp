@@ -2,49 +2,117 @@
 
 #include "Lifecycle.h"
 #include "Globals.h"
-#include "Sensors.h"
+#include "Helpers.h"
 #include "MotorWheel.h"
 #include "Claw.h"
-#include "Test.h"
 
-Claw claw;
 MotorWheel motorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
-
-const int bridgeDropDelay = 2000; // [ms]
-
-// Reset constants
-const int bottomBridgeServoResetPosition = 90;
-const int topBridgeLowerServoResetPosition = 0;
-const int topBridgeUpperServoResetPosition = 90;
-const int leftDumpServoResetPosition = 160;
-const int rightDumpServoResetPosition = 10;
-
-// Deploy constants
-const int bottomBridgeServoDeployPosition = 150;
-const int topBridgeLowerServoDeployPosition = 90;
-const int topBridgeUpperServoDeployPosition = 0;
-const int dumpDeployAngle = 150;
+Claw claw;
 
 int cliffCount = 0;
 
 // API
 void run() {
-	reset();
 	unsigned long prevLoopStartTime = millis();
-	int numberOfTeddiesGrabbed = 0;
-	systemDiagnostics();
-
-
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 
+	// With bottom bot
+	int numberOfTeddiesGrabbed = 0;
+	bool onBottomBot = true;
+	bool grabbed = false;
 	reset();
-	delay(2000);
+	startBottomBot();
+	delay(1000);
+
+	// Temporary for testing top bot only
+	// int numberOfTeddiesGrabbed = 2;
+	// bool onBottomBot = false;
+	// claw.switchToTopBot();
+	// delay(2000);
+	// motorWheel.forward();
 
 	while(true) {
 		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 
-		// TODO: Add run code
+		// TODO: Write this
+
+		// if(onBottomBot && digitalRead(communicationIn)) {
+		// 	onBottomBot = false;
+		// 	motorWheel.forward(100);
+		// } 
+
+		LCD.clear(); LCD.print("Trig: "); LCD.print(clawIRTriggered());
+		if(clawIRTriggered() && grabbed == false) {
+			grabbed = true;
+			if(onBottomBot) {
+				foundTeddyWithBottom();
+			} else {
+				// motorWheel.stop();
+				// if(numberOfTeddiesGrabbed == 3) { // Drive forward to get the 4th teddy into the claw better
+				// 	motorWheel.forward();
+				// 	delay(800);
+				// 	motorWheel.stop();
+				// }
+			}
+			claw.grab();
+			numberOfTeddiesGrabbed ++;
+		}
+
+		motorWheel.poll();
+		if(claw.poll()) {
+			grabbed = false;
+
+			if(numberOfTeddiesGrabbed == 1 || numberOfTeddiesGrabbed == 2) {
+				digitalWrite(communicationOut, HIGH);
+				if(numberOfTeddiesGrabbed == 1) {
+					claw.raiseForBridgeDrop();
+					while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
+					claw.reset();
+				} else if(numberOfTeddiesGrabbed == 2) {
+					claw.switchToTopBot();
+				}
+			}
+
+
+			// } else if(numberOfTeddiesGrabbed == 3) {
+			// 	motorWheel.forward();
+			// 	while(!foundCliff()) {}
+			// 	motorWheel.stop();
+			// 	delay(500);
+			// 	// motorWheel.reverse();
+			// 	// delay(00);
+			// 	motorWheel.stop();
+			// 	delay(800);
+			// 	motorWheel.turnLeft(80);
+			// 	delay(2000);
+			// 	// delay(20000);
+			// 	// motorWheel.forward();
+			// 	// delay(200);
+			// 	// motorWheel.stop();
+			// 	// LCD.clear(); LCD.print("Hit here");
+			// 	// delay(20000);
+			// } else if(numberOfTeddiesGrabbed == 4) {
+			// 	delay(2000);
+			// 	motorWheel.forward();
+			// 	while(!foundCliff()) {}
+			// 	motorWheel.stop();
+			// 	delay(1000);
+			// 	motorWheel.turnLeft(90);
+			// 	delay(1000);
+			// 	motorWheel.forward();
+			// 	while(!foundCliff()) {}
+			// 	motorWheel.stop();
+			// 	delay(20000);
+				
+			// 	// while(!foundCliff()) {}
+			// 	// motorWheel.stop();
+			// }
+
+			// if(numberOfTeddiesGrabbed != 1 && numberOfTeddiesGrabbed != 2) {
+			// 	motorWheel.runWithPID = true;
+			// }
+		}
 
 		// TODO: Remove this for competition
 		if (stopbutton()) {
@@ -56,26 +124,6 @@ void run() {
 			}
 		}
 	}
-}
-
-
-// Helpers
-
-void reset() {
-	// TODO: add reset code
-}
-
-// TODO: Fix this
-void deployBridge() {
-	// setServo(topBridgeLowerServo, topBridgeLowerServoDeployPosition);
-	// delay(bridgeDropDelay / 2);
-	// setServo(topBridgeUpperServo, topBridgeUpperServoDeployPosition);
-	// delay(bridgeDropDelay);
-}
-
-void activateDumper() {
-	// setServo(storageDumpServoLeft, leftDumpServoResetPosition - dumpDeployAngle, false);
-	// setServo(storageDumpServoRight, rightDumpServoResetPosition + dumpDeployAngle, false);
 }
 
 // If all else fails
@@ -91,3 +139,18 @@ void codeRed() {
 		// TODO: Write this
 	}
 }
+
+void reset() {
+	motorWheel.runWithPID = false;
+	digitalWrite(communicationOut, HIGH);
+	claw.reset();
+	resetBridge();
+	resetDumper();
+}
+
+
+
+
+
+
+

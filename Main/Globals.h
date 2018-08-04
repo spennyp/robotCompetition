@@ -44,23 +44,24 @@ class ServoOutput {
         TINAH::Servo servo;
         DigitalPinAndValue digitalControl1;
         DigitalPinAndValue digitalControl2;
-        int lastAngle;
 };
-void setServo(ServoOutput servoInfo, int angle, bool sweep = false);
+void setServo(ServoOutput servoInfo, int angle);
 extern ServoOutput leftStorageDumpServo;
 extern ServoOutput rightStorageDumpServo;
 extern ServoOutput rightBridgeServo;
 extern ServoOutput leftBridgeServo;
 extern ServoOutput clawDumpServo;
 extern ServoOutput clawGrabServo;
-extern ServoOutput ejectServo;
 extern ServoOutput bottomBridgeServo;
+extern ServoOutput transition;
 
 
 // Digital pins
 extern int topHall;
 extern int bottomHall;
 extern int frontTouchSensor;
+extern int communicationOut;
+extern int communicationIn;
 
 
 // Analog pins

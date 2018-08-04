@@ -5,8 +5,8 @@
 
 const int defualtTurnSpeed = 150;
 
-MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
-	motorSpeed = speed.value;
+MotorWheel::MotorWheel(MenuItem _motorSpeed, PID pid) : pid(pid) {
+	motorSpeed = _motorSpeed.value;
 	runWithPID = true;
 }
 
@@ -14,12 +14,12 @@ MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
 void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 	runWithPID = false;
 	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
-	motor.speed(leftMotor, -150);
+	motor.speed(leftMotor, -turnSpeed);
 	if(backup) {
-		motor.speed(rightMotor, -150);
-		delay(400);
+		motor.speed(rightMotor, -turnSpeed);
+		delay(200);
 	}
-	motor.speed(rightMotor, 150);
+	motor.speed(rightMotor, turnSpeed);
 	delay(angle * delayPerDegreeTurn.value);
 	stop();
 }
@@ -27,12 +27,13 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 // Default perapeter of 0, which runs at defualtTurnSpeed
 void MotorWheel::turnRight(int angle, int speed, bool backup) {
 	runWithPID = false;
-	motor.speed(rightMotor, -150);
+	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
+	motor.speed(rightMotor, -turnSpeed);
 	if(backup) {
-		motor.speed(leftMotor, -150);
-		delay(400);
+		motor.speed(leftMotor, -turnSpeed);
+		delay(200);
 	}
-	motor.speed(leftMotor, 150);
+	motor.speed(leftMotor, turnSpeed);
 	delay(angle * delayPerDegreeTurn.value);
 	stop();
 }
@@ -57,7 +58,8 @@ void MotorWheel::reverse() {
 
 void MotorWheel::stop() {
 	runWithPID = false;
-	motor.stop_all();
+	motor.stop(rightMotor);
+	motor.stop(leftMotor);
 }
 
 
@@ -66,6 +68,7 @@ void MotorWheel::stop() {
 void MotorWheel::poll() {
 	if(runWithPID) {
 		int err = pid.getError();
+		LCD.clear(); LCD.print("Speed: "); LCD.print(err);
 
 		// when err < 0 turns right. when err > 0 turns left
 		motor.speed(leftMotor, motorSpeed - err);

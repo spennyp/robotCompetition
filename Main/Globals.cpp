@@ -28,32 +28,17 @@ ServoOutput::ServoOutput(TINAH::Servo _servo, DigitalState digitalState1, Digita
     DigitalPinAndValue pinAndVal2(servoControlPin2, digitalState2);
     digitalControl1 = pinAndVal1;
     digitalControl2 = pinAndVal2;
-    lastAngle = 0;
 }
 ServoOutput::ServoOutput() {};
 
-void setServo(ServoOutput servoInfo, int angle, bool sweep) {
+void setServo(ServoOutput servoInfo, int angle) {
     if(digitalRead(servoInfo.digitalControl1.pinNumber) != servoInfo.digitalControl1.state || digitalRead(servoInfo.digitalControl2.pinNumber) != servoInfo.digitalControl2.state) {
+        servoInfo.servo.detach();
         digitalWrite(servoInfo.digitalControl1.pinNumber, servoInfo.digitalControl1.state);
         digitalWrite(servoInfo.digitalControl2.pinNumber, servoInfo.digitalControl2.state);
-        delay(200);
     }
 
-    if(sweep) {
-        int pos = servoInfo.lastAngle;
-        for(pos; pos <= angle; pos += 5) {
-            servoInfo.servo.write(pos); 
-            delay(15);
-        }
-        for(pos; pos >= angle; pos -= 5) {
-            servoInfo.servo.write(pos);        
-            delay(15);
-        }
-    } else {
-        servoInfo.servo.write(angle);
-    }
-   
-    servoInfo.lastAngle = angle;
+    servoInfo.servo.write(angle);
 }
 
 struct ServoOutput leftStorageDumpServo(servo1, digitalOff, digitalOff);
@@ -67,16 +52,18 @@ struct ServoOutput bottomBridgeServo(servo0, digitalOn, digitalOn);
 
 
 // Digital pins
-extern int topHall = 13;
-extern int bottomHall = 14;
-extern int frontTouchSensor = 15;
+int bottomHall = 13;
+int topHall = 14;
+int frontTouchSensor = 15;
+int communicationOut = 7;
+int communicationIn = 8;
 
 
 // Analog Pins
 int farTapeFollowQRD = 5;
 int nearTapeFollowQRD = 4;
 int cliffQRD = 3;
-int clawIR = 4;
+int clawIR = 2;
 
 
 // Helpers

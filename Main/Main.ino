@@ -1,6 +1,6 @@
 #include "Menu.h"
-#include "Lifecycle.h"
 #include <phys253.h>
+#include "Globals.h"
 
 void setup() {
 	#include <phys253setup.txt>
@@ -17,27 +17,28 @@ void setup() {
 	pinMode(5, OUTPUT);
 	pinMode(6, OUTPUT);
 	pinMode(7, OUTPUT);
+	digitalWrite(communicationOut, HIGH);
 	delay(1000);
 }
 
 void loop() {
 	LCD.clear(); LCD.home();
-	LCD.print("Start -> Run");
+	LCD.print("Start -> RunMenu");
 	LCD.setCursor(0, 1);
-	LCD.print("Stop -> Menu");
+	LCD.print("Stop -> ConMenu");
 	delay(100);
 
 	if (stopbutton()) {
 		delay(100);
 		if (stopbutton()) {
-			menu();
+			configurationMenu();
 		}
 	}
 	else if (startbutton()) {
 		delay(100);
 		if (startbutton()) {
 			LCD.clear();
-			run();
+			runMenu();
 		}
 	}
 }
