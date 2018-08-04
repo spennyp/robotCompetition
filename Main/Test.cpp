@@ -37,6 +37,8 @@ void systemDiagnostics() {
 
 void testFullSystem() {
 	unsigned long prevLoopStartTime = millis();
+	testClawInstance = Claw();
+
 
 	LCD.clear(); LCD.print("Test edgeSensors"); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
 	while(!startbutton()) {
@@ -44,18 +46,18 @@ void testFullSystem() {
 		delay(100);
 	}
 
-	LCD.clear(); LCD.print("Testing PID"); LCD.setCursor(0, 1); LCD.print("stop -> next"); delay(1000);
-	testMotorWheel.runWithPID = true;
-	while(!stopbutton()) {
-		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
-		prevLoopStartTime = millis();
-		testMotorWheel.poll();
-	}
+	// LCD.clear(); LCD.print("Testing PID"); LCD.setCursor(0, 1); LCD.print("stop -> next"); delay(1000);
+	// testMotorWheel.runWithPID = true;
+	// while(!stopbutton()) {
+	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+	// 	prevLoopStartTime = millis();
+	// 	testMotorWheel.poll();
+	// }
 
-	LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
-	while(!startbutton()) {
-		testTurning();
-	}
+	// LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
+	// while(!startbutton()) {
+	// 	testTurning();
+	// }
 
 	LCD.clear(); LCD.print("Testing Claw IR "); LCD.setCursor(0, 1); LCD.print("Detector"); delay(1000);
 	while(!stopbutton()) {
@@ -75,22 +77,32 @@ void testFullSystem() {
 	}
 
 
-	LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
-	testClawInstance = Claw();
-	testClawInstance.reset();
-	while(!stopbutton()) {
-		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
-		prevLoopStartTime = millis();
-		testClaw();
+	// LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
+	// testClawInstance.reset();
+	// while(!stopbutton()) {
+	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+	// 	prevLoopStartTime = millis();
+	// 	testClaw();
+	// }
+
+	// LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
+	// testClawInstance.switchToTopBot();
+	// while(!stopbutton()) {
+	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+	// 	prevLoopStartTime = millis();
+	// 	testClaw();
+	// }
+
+	LCD.clear(); LCD.print("Claw bridge drop"); delay(1000);
+	while(!startbutton()) {
+		testClawInstance.reset();
+		delay(2000);
+		if(startbutton()) { break; }
+		testClawInstance.raiseForBridgeDrop();
+		delay(2000);
 	}
 
-	LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
-	testClawInstance.switchToTopBot();
-	while(!stopbutton()) {
-		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
-		prevLoopStartTime = millis();
-		testClaw();
-	}
+
 
 	// LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
 	// while(!startbutton()) {
