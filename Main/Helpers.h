@@ -25,5 +25,7 @@ extern void activateDumper();
 extern void resetDumper();
 extern void deployBridge();
 extern void resetBridge();
+extern void startBottomnBot();
+extern void foundTeddyWithBottom();
 
 #endif

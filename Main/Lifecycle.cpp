@@ -24,7 +24,6 @@ void run() {
 	startBottomBot();
 	delay(1000);
 
-
 	// Temporary for testing top bot only
 	// int numberOfTeddiesGrabbed = 2;
 	// bool onBottomBot = false;
@@ -32,14 +31,13 @@ void run() {
 	// delay(2000);
 	// motorWheel.forward();
 
-	
 	while(true) {
 		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 
 		// TODO: Write this
 
-		// if(onBottomBot && digitalRead(bottomBotTransitionPin)) {
+		// if(onBottomBot && digitalRead(communicationIn)) {
 		// 	onBottomBot = false;
 		// 	motorWheel.forward(100);
 		// } 
@@ -65,10 +63,16 @@ void run() {
 		if(claw.poll()) {
 			grabbed = false;
 
-			// digitalWrite(stopPin, HIGH); // For first half
-			// if(numberOfTeddiesGrabbed == 1 || numberOfTeddiesGrabbed == 2) {
-			// 	digitalWrite(stopPin, HIGH);
-			// }
+			if(numberOfTeddiesGrabbed == 1 || numberOfTeddiesGrabbed == 2) {
+				digitalWrite(communicationOut, HIGH);
+				if(numberOfTeddiesGrabbed == 1) {
+					claw.raiseForBridgeDrop();
+					while(digitalRead(communicationIn) == LOW); // stays up until the bridge is crossed
+					claw.reset();
+				} else if(numberOfTeddiesGrabbed == 2) {
+					claw.switchToTopBot();
+				}
+			}
 
 
 			// } else if(numberOfTeddiesGrabbed == 3) {
@@ -105,9 +109,9 @@ void run() {
 			// 	// motorWheel.stop();
 			// }
 
-			if(numberOfTeddiesGrabbed != 1 && numberOfTeddiesGrabbed != 2) {
-				// motorWheel.runWithPID = true;
-			}
+			// if(numberOfTeddiesGrabbed != 1 && numberOfTeddiesGrabbed != 2) {
+			// 	motorWheel.runWithPID = true;
+			// }
 		}
 
 		// TODO: Remove this for competition
@@ -138,26 +142,15 @@ void codeRed() {
 
 void reset() {
 	motorWheel.runWithPID = false;
-	// digitalWrite(stopPin, HIGH);
+	digitalWrite(communicationOut, HIGH);
 	claw.reset();
-	// resetBridge();
-	// resetDumper();
+	resetBridge();
+	resetDumper();
 }
 
-void foundTeddyWithBottom() {
-	digitalWrite(stopPin, LOW);
-	delay(250); // Pulse LOW for 250 ms
-	digitalWrite(stopPin, HIGH);
-	while(!clawIRTriggered()) {}
-	digitalWrite(stopPin, LOW);
-	delay(500);
-}
 
-void startBottomBot() {
-	digitalWrite(stopPin, LOW);
-	delay(250);
-	digitalWrite(stopPin, HIGH);
-}
+
+
 
 
 

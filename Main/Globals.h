@@ -60,8 +60,8 @@ extern ServoOutput transition;
 extern int topHall;
 extern int bottomHall;
 extern int frontTouchSensor;
-extern int bottomBotTransitionPin;
-extern int stopPin;
+extern int communicationOut;
+extern int communicationIn;
 
 
 // Analog pins

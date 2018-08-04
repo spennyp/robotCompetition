@@ -55,8 +55,8 @@ struct ServoOutput bottomBridgeServo(servo0, digitalOn, digitalOn);
 int bottomHall = 13;
 int topHall = 14;
 int frontTouchSensor = 15;
-int bottomBotTransitionPin = 8;
-int stopPin = 7;
+int communicationOut = 7;
+int communicationIn = 8;
 
 
 // Analog Pins

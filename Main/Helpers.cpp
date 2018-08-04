@@ -65,3 +65,13 @@ void resetBridge() {
 	setServo(leftBridgeServo, leftBridgeServoResetPosition);
 	setServo(rightBridgeServo, rightBridgeServoResetPosition);
 }
+
+void startBottomBot() {
+	digitalWrite(stopPin, LOW);
+	delay(250);
+	digitalWrite(stopPin, HIGH);
+}
+
+void foundTeddyWithBottom() {
+	digitalWrite(stopPin, LOW); // Writes low and stays there until done grabbing
+}

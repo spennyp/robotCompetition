@@ -24,6 +24,7 @@ class Claw {
         void grab();
         void switchToTopBot();
         void reset();
+        void raiseForBridgeDrop();
         bool poll();
 };
 

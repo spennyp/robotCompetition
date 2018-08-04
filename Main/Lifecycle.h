@@ -15,7 +15,5 @@ extern void run();
 void reset();
 void runClawForBottomBot();
 void codeRed();
-void foundTeddyWithBottom();
-void startBottomBot();
 
 #endif
