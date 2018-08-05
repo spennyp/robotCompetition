@@ -20,7 +20,7 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 		delay(400);
 	}
 	motor.speed(rightMotor, turnSpeed);
-	delay(angle * delayPerDegreeTurn.value);
+	delay(angle * delayPerDegreeTurn.value / 2.0); // Divided by 2.0 for finer adjustment
 	stop();
 }
 
@@ -34,7 +34,7 @@ void MotorWheel::turnRight(int angle, int speed, bool backup) {
 		delay(200);
 	}
 	motor.speed(leftMotor, turnSpeed);
-	delay(angle * delayPerDegreeTurn.value);
+	delay(angle * delayPerDegreeTurn.value / 2.0); // Divided by 2.0 for finer adjustment
 	stop();
 }
 

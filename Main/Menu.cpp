@@ -35,14 +35,21 @@ void configurationMenu() {
 		LCD.clear(); LCD.home();
 		LCD.print(configurationMenuItems[menuIndex].name); LCD.print(" "); LCD.print(configurationMenuItems[menuIndex].value);
 		LCD.setCursor(0, 1);
-		LCD.print("Set to "); LCD.print(knob(7)); LCD.print("?");
+		int setValue = knob(7) / 3;
+
+		// Multiplier for values that need to go higher
+		if(configurationMenuItems[menuIndex].name == cliffThreshold.name || configurationMenuItems[menuIndex].name == clawIRThreshold.name || configurationMenuItems[menuIndex].name == pidThreshold.name) {
+			setValue *= 3; 
+		}
+
+		LCD.print("Set to "); LCD.print(setValue); LCD.print("?");
 		delay(100);
 
 		/* Press start button to save the new value */
 		if (startbutton()) {
 			delay(100);
 			if (startbutton()) {
-				configurationMenuItems[menuIndex].value = knob(7);
+				configurationMenuItems[menuIndex].value = setValue;
 				configurationMenuItems[menuIndex].save();
 				delay(250);
 			}
