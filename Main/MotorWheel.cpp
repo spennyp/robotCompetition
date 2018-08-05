@@ -17,7 +17,7 @@ void MotorWheel::turnLeft(int angle, int speed, bool backup) {
 	motor.speed(leftMotor, -turnSpeed);
 	if(backup) {
 		motor.speed(rightMotor, -turnSpeed);
-		delay(200);
+		delay(400);
 	}
 	motor.speed(rightMotor, turnSpeed);
 	delay(angle * delayPerDegreeTurn.value);

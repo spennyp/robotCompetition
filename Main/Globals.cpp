@@ -32,11 +32,11 @@ ServoOutput::ServoOutput(TINAH::Servo _servo, DigitalState digitalState1, Digita
 ServoOutput::ServoOutput() {};
 
 void setServo(ServoOutput servoInfo, int angle) {
-    // if(digitalRead(servoInfo.digitalControl1.pinNumber) != servoInfo.digitalControl1.state || digitalRead(servoInfo.digitalControl2.pinNumber) != servoInfo.digitalControl2.state) {
-    //     servoInfo.servo.detach();
+    if(digitalRead(servoInfo.digitalControl1.pinNumber) != servoInfo.digitalControl1.state || digitalRead(servoInfo.digitalControl2.pinNumber) != servoInfo.digitalControl2.state) {
+        servoInfo.servo.detach();
         digitalWrite(servoInfo.digitalControl1.pinNumber, servoInfo.digitalControl1.state);
         digitalWrite(servoInfo.digitalControl2.pinNumber, servoInfo.digitalControl2.state);
-    // }
+    }
 
     servoInfo.servo.write(angle);
 }

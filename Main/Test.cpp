@@ -54,10 +54,10 @@ void testFullSystem() {
 	// 	testMotorWheel.poll();
 	// }
 
-	// LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
-	// while(!startbutton()) {
-	// 	testTurning();
-	// }
+	LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
+	while(!startbutton()) {
+		testTurning();
+	}
 
 	LCD.clear(); LCD.print("Testing Claw IR "); LCD.setCursor(0, 1); LCD.print("Detector"); delay(1000);
 	while(!stopbutton()) {

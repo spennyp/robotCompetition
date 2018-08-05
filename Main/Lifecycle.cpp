@@ -67,11 +67,11 @@ void run() {
 			if(numberOfTeddiesGrabbed == 1 || numberOfTeddiesGrabbed == 2) {
 				digitalWrite(communicationOut, HIGH);
 				if(numberOfTeddiesGrabbed == 1) {
-					//claw.raiseForBridgeDrop();
-					//while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
-					//claw.reset();
+					claw.raiseForBridgeDrop();
+					while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
+					claw.reset();
 				} else if(numberOfTeddiesGrabbed == 2) {
-					//claw.switchToTopBot();
+					claw.switchToTopBot();
 				}
 			}
 

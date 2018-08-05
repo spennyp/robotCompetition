@@ -24,7 +24,9 @@ Claw::Claw() {
 }
 
 void Claw::grab() {
+    int normalAngle = (bottomBot) ? dumpServoNormalAngleBottomBot : dumpServoNormalAngleTopBot;
     setServo(clawGrabServo, clawServoGrabAngle); 
+    setServo(clawDumpServo, normalAngle); // Need to set this explicitly
     grabbed = true;
     delay(500);
     if(bottomBot) {
