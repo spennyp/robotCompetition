@@ -8,6 +8,7 @@
 
 Claw testClawInstance;
 MotorWheel testMotorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
+bool grabbed = false;
 
 void systemDiagnostics() {
     LCD.clear(); LCD.print("Diagnostics"); 
@@ -38,7 +39,6 @@ void systemDiagnostics() {
 void testFullSystem() {
 	unsigned long prevLoopStartTime = millis();
 	testClawInstance = Claw();
-
 
 	LCD.clear(); LCD.print("Test edgeSensors"); LCD.setCursor(0, 1); LCD.print("QRD's"); delay(1000);
 	while(!startbutton()) {
@@ -77,21 +77,23 @@ void testFullSystem() {
 	}
 
 
-	// LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
-	// testClawInstance.reset();
-	// while(!stopbutton()) {
-	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
-	// 	prevLoopStartTime = millis();
-	// 	testClaw();
-	// }
+	LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
+	testClawInstance.reset();
+	grabbed = false;
+	while(!stopbutton()) {
+		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+		prevLoopStartTime = millis();
+		testClaw();
+	}
 
-	// LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
-	// testClawInstance.switchToTopBot();
-	// while(!stopbutton()) {
-	// 	while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
-	// 	prevLoopStartTime = millis();
-	// 	testClaw();
-	// }
+	LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
+	testClawInstance.switchToTopBot();
+	grabbed = false;
+	while(!stopbutton()) {
+		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
+		prevLoopStartTime = millis();
+		testClaw();
+	}
 
 	LCD.clear(); LCD.print("Claw bridge drop"); delay(1000);
 	while(!startbutton()) {
@@ -102,12 +104,10 @@ void testFullSystem() {
 		delay(2000);
 	}
 
-
-
-	// LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
-	// while(!startbutton()) {
-	// 	testBridge();
-	// }
+	LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
+	while(!startbutton()) {
+		testBridge();
+	}
 
 	LCD.clear(); LCD.print("Leaving testing"); delay(1000);
 }
@@ -138,10 +138,13 @@ void testClaw() {
 	bool triggered = clawIRTriggered();
 	LCD.clear(); LCD.print("IR Triggered: "); LCD.print(triggered);
 	LCD.setCursor(0, 1); LCD.print("stop -> next");
-	if(triggered) {
+	if(triggered && !grabbed) {
+		grabbed = true;
 		testClawInstance.grab();
 	}
-	testClawInstance.poll();
+	if(testClawInstance.poll()) {
+		grabbed = false;
+	}
 }
 
 void testTurning() {

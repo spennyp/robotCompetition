@@ -7,9 +7,9 @@
 // TODO: Figure out what these 6 values should be
 const int clawServoOpenAngle = 130;
 const int clawServoGrabAngle = 5;
-const int dumpServoNormalAngleTopBot = 160;
+const int dumpServoNormalAngleTopBot = 140;
 const int dumpServoNormalAngleBottomBot = 170;
-const int dumpServoDumpAngle = 8;
+const int dumpServoDumpAngle = 0;
 const int dumpServoDumpTime = 2000;
 const int grabServoDumpReleaseTime = 1000;
 
@@ -42,7 +42,7 @@ void Claw::switchToTopBot() {
 void Claw::reset() {
     int normalAngle = (bottomBot) ? dumpServoNormalAngleBottomBot : dumpServoNormalAngleTopBot;
     if(bottomBot) {
-        if (!bottomHallTriggered()) {
+        if(!bottomHallTriggered()) {
             close();
             setServo(clawDumpServo, transitionAngle);
             delay(1000);
@@ -50,7 +50,7 @@ void Claw::reset() {
             while(!bottomHallTriggered()) {} 
             motor.speed(winchMotor, 0);
         }
-    } else if (!topHallTriggered()){
+    } else if(!topHallTriggered()){
         close();
         delay(500);
         raise();

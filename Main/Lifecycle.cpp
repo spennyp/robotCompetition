@@ -13,6 +13,7 @@ int cliffCount = 0;
 
 // API
 void run() {
+	claw = Claw();
 	unsigned long prevLoopStartTime = millis();
 	LCD.clear(); LCD.print("Running"); LCD.setCursor(0, 1); LCD.print("Stop to return");
 
@@ -43,7 +44,7 @@ void run() {
 		// } 
 
 		LCD.clear(); LCD.print("Trig: "); LCD.print(clawIRTriggered());
-		if(clawIRTriggered() && grabbed == false) {
+		if(clawIRTriggered() && (grabbed == false)) {
 			grabbed = true;
 			if(onBottomBot) {
 				foundTeddyWithBottom();
@@ -66,11 +67,11 @@ void run() {
 			if(numberOfTeddiesGrabbed == 1 || numberOfTeddiesGrabbed == 2) {
 				digitalWrite(communicationOut, HIGH);
 				if(numberOfTeddiesGrabbed == 1) {
-					claw.raiseForBridgeDrop();
-					while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
-					claw.reset();
+					//claw.raiseForBridgeDrop();
+					//while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
+					//claw.reset();
 				} else if(numberOfTeddiesGrabbed == 2) {
-					claw.switchToTopBot();
+					//claw.switchToTopBot();
 				}
 			}
 
