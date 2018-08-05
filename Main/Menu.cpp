@@ -72,9 +72,10 @@ void configurationMenu() {
 // Run menu
 
 String runBot = "Run Bot";
+String runSensorTest = "Run Sensor Test";
 String runSystemTest = "Run System Test";
 String runDiagonistics = "Run Diagonistics";
-String runMenuItems[] = { runBot, runSystemTest, runDiagonistics };
+String runMenuItems[] = { runBot, runSensorTest, runSystemTest, runDiagonistics };
 
 void runMenu() {
 	LCD.clear(); LCD.print("Entering"); LCD.setCursor(0, 1); LCD.print("Run menu"); 
@@ -96,8 +97,10 @@ void runMenu() {
 				String menuSelection = runMenuItems[menuIndex];
 				if(menuSelection == runBot) {
 					run();
+				} else if(menuSelection == runSensorTest) {
+					sensorTest();
 				} else if(menuSelection == runSystemTest) {
-					testFullSystem();
+					systemTest();
 				} else {
 					systemDiagnostics();
 				}
