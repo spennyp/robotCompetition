@@ -72,6 +72,7 @@ void run() {
 					delay(1000);
 					LCD.print(digitalRead(communicationIn) == LOW);
 					while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
+					LCD.clear(); LCD.print("ITS HIGH NOW");
 					claw.reset();
 				} else if(numberOfTeddiesGrabbed == 2) {
 					claw.switchToTopBot();

@@ -46,6 +46,12 @@ void testFullSystem() {
 		delay(100);
 	}
 
+	LCD.clear(); LCD.print("Testing input"); delay(1000);
+	while(!startbutton()) {
+		LCD.clear(); LCD.print(digitalRead(communicationIn));
+		delay(100);
+	}
+
 	// LCD.clear(); LCD.print("Testing PID"); LCD.setCursor(0, 1); LCD.print("stop -> next"); delay(1000);
 	// testMotorWheel.runWithPID = true;
 	// while(!stopbutton()) {
@@ -54,10 +60,10 @@ void testFullSystem() {
 	// 	testMotorWheel.poll();
 	// }
 
-	LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
-	while(!startbutton()) {
-		testTurning();
-	}
+	// LCD.clear(); LCD.print("Testing turning"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
+	// while(!startbutton()) {
+	// 	testTurning();
+	// }
 
 	LCD.clear(); LCD.print("Testing Claw IR "); LCD.setCursor(0, 1); LCD.print("Detector"); delay(1000);
 	while(!stopbutton()) {
