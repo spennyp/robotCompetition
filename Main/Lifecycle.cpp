@@ -56,6 +56,7 @@ void run() {
 				// 	motorWheel.stop();
 				// }
 			}
+			delay(1000);
 			claw.grab();
 			numberOfTeddiesGrabbed ++;
 		}
@@ -68,6 +69,8 @@ void run() {
 				digitalWrite(communicationOut, HIGH);
 				if(numberOfTeddiesGrabbed == 1) {
 					claw.raiseForBridgeDrop();
+					delay(1000);
+					LCD.print(digitalRead(communicationIn) == LOW);
 					while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
 					claw.reset();
 				} else if(numberOfTeddiesGrabbed == 2) {

@@ -96,6 +96,7 @@ void testFullSystem() {
 	}
 
 	LCD.clear(); LCD.print("Claw bridge drop"); delay(1000);
+	testClawInstance = Claw();
 	while(!startbutton()) {
 		testClawInstance.reset();
 		delay(2000);
