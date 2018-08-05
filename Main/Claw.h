@@ -15,17 +15,18 @@ class Claw {
         void lower();
         void open();
         void close();
-        void dump();
-        friend void testClaw();
+        void dump(int numberOfTeddiesGrabbed);
+        void positionForBridgeDrop();
         bool bottomBot;
         bool grabbed;
+        friend void testClaw(); // These are for testing purposes
+        friend void testClawBridgeDropPosition();
     public:
         Claw();
         void grab();
         void switchToTopBot();
         void reset();
-        void raiseForBridgeDrop();
-        bool poll();
+        bool poll(int numberOfTeddiesGrabbed = 0);
 };
 
 #endif

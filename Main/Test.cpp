@@ -122,14 +122,10 @@ void systemTest() {
 		testClaw();
 	}
 
-	LCD.clear(); LCD.print("Test Claw raise"); LCD.setCursor(0, 1); LCD.print("for bridge drop"); delay(1000);
+	LCD.clear(); LCD.print("Claw bridge"); LCD.setCursor(0, 1); LCD.print("drop position"); delay(1000);
 	testClawInstance = Claw();
 	while(!startbutton()) {
-		testClawInstance.reset();
-		delay(2000);
-		if(startbutton()) { break; }
-		testClawInstance.raiseForBridgeDrop();
-		delay(2000);
+		testClawBridgeDropPosition();
 	}
 
 	LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
@@ -175,6 +171,14 @@ void testClaw() {
 	if(testClawInstance.poll()) {
 		grabbed = false;
 	}
+}
+
+void testClawBridgeDropPosition() {
+	testClawInstance.reset();
+	delay(2000);
+	if(startbutton()) { return; }
+	testClawInstance.positionForBridgeDrop();
+	delay(2000);
 }
 
 void testBridge() {

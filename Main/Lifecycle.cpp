@@ -59,6 +59,9 @@ void run() {
 			delay(1000);
 			claw.grab();
 			numberOfTeddiesGrabbed ++;
+			if(numberOfTeddiesGrabbed == 2) {
+				claw.switchToTopBot();
+			}
 		}
 
 		motorWheel.poll();
@@ -68,14 +71,9 @@ void run() {
 			if(numberOfTeddiesGrabbed == 1 || numberOfTeddiesGrabbed == 2) {
 				digitalWrite(communicationOut, HIGH);
 				if(numberOfTeddiesGrabbed == 1) {
-					claw.raiseForBridgeDrop();
-					delay(1000);
-					LCD.print(digitalRead(communicationIn) == LOW);
-					while(digitalRead(communicationIn) == LOW) {} // stays up until the bridge is crossed
-					LCD.clear(); LCD.print("ITS HIGH NOW");
+					// keeps claw up until told to lower it by bottom for first bridge drop
+					while(digitalRead(communicationIn) == LOW) {} 
 					claw.reset();
-				} else if(numberOfTeddiesGrabbed == 2) {
-					claw.switchToTopBot();
 				}
 			}
 

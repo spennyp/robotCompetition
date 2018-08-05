@@ -30,6 +30,7 @@ extern void testCommunicationIn();
 extern void systemTest();
 extern void testDump();
 extern void testClaw();
+extern void testClawBridgeDropPosition();
 extern void testBridge();
 extern void testTurning();
 
