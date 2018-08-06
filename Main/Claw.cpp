@@ -66,14 +66,6 @@ void Claw::reset() {
     delay(500);
 }
 
-void Claw::positionForBridgeDrop() {
-    close();
-    delay(500);
-    raise();
-    while(!topHallTriggered()) {}
-    motor.speed(winchMotor, 0);
-}
-
 
 // Lifecycle
 
@@ -85,9 +77,6 @@ bool Claw::poll(int numberOfTeddiesGrabbed) {
         if(topSwitch && grabbed) {
             dump(numberOfTeddiesGrabbed);
             grabbed = false;
-            if(bottomBot) {
-                lower();
-            }
             return true;
         }
     }
@@ -116,6 +105,8 @@ void Claw::dump(int numberOfTeddiesGrabbed) {
     delay(1000);
     if(numberOfTeddiesGrabbed == 1) {
         positionForBridgeDrop();
+    } else if(numberOfTeddiesGrabbed == 2) {
+        switchToTopBot();
     } else {
         reset();
     }
@@ -129,3 +120,13 @@ void Claw::close() {
     setServo(clawGrabServo, clawServoGrabAngle); 
 }
 
+void Claw::positionForBridgeDrop() {
+    close();
+    delay(500);
+    setServo(clawDumpServo, transitionAngle);
+    if(!topHallTriggered()) {
+        raise();
+        while (!topHallTriggered()) {}
+    }
+    motor.speed(winchMotor, 0);
+}

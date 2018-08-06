@@ -59,13 +59,10 @@ void run() {
 			delay(1000);
 			claw.grab();
 			numberOfTeddiesGrabbed ++;
-			if(numberOfTeddiesGrabbed == 2) {
-				claw.switchToTopBot();
-			}
 		}
 
 		motorWheel.poll();
-		if(claw.poll()) {
+		if(claw.poll(numberOfTeddiesGrabbed)) {
 			grabbed = false;
 
 			if(numberOfTeddiesGrabbed == 1 || numberOfTeddiesGrabbed == 2) {
