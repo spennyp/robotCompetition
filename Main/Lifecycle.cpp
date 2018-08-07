@@ -59,6 +59,7 @@ void run() {
 			delay(1000);
 			claw.grab();
 			numberOfTeddiesGrabbed ++;
+
 		}
 
 		motorWheel.poll();

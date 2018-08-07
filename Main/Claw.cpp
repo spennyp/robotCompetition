@@ -7,7 +7,7 @@
 // TODO: Figure out what these 6 values should be
 const int clawServoOpenAngle = 170;
 const int clawServoGrabAngle = 30;
-const int dumpServoNormalAngleTopBot = 140;
+const int dumpServoNormalAngleTopBot = 130;
 const int dumpServoNormalAngleBottomBot = 170;
 const int dumpServoDumpAngle = 0;
 const int dumpServoDumpTime = 2000;
