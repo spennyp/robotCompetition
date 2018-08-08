@@ -76,7 +76,7 @@ bool Claw::poll(int numberOfTeddiesGrabbed) {
     if(topSwitch || bottomHallTriggered()) {
         motor.speed(winchMotor, 0);
         if(topSwitch && grabbed) {
-            if(numberOfTeddiesGrabbed == 3 || numberOfTeddiesGrabbed == 5) { // Manually call from lifecycle once hit the cliff
+            if(numberOfTeddiesGrabbed == 3 || numberOfTeddiesGrabbed == 4) { // Manually call from lifecycle once hit the cliff
                 setServo(clawDumpServo, dumpServoHoldAngle);
             } else if (numberOfTeddiesGrabbed == 5) {
                 setServo(clawDumpServo, 80);
