@@ -98,9 +98,10 @@ void grabTeddy() {
 		// If we are on the 4th teddy, drive forward to push it into claw
 		if(numberOfTeddiesGrabbed == 3) {
 			motorWheel.forward(80);
-			delay(300);
+			delay(200);
 		}
 		motorWheel.stop();
+		
 	}
 	delay(400);
 	claw.grab();
