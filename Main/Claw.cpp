@@ -6,8 +6,8 @@
 
 // TODO: Figure out what these 6 values should be
 const int clawServoOpenAngle = 145;
-const int clawServoGrabAngle = 5;
-const int dumpServoNormalAngleTopBot = 140;
+const int clawServoGrabAngle = 0;
+const int dumpServoNormalAngleTopBot = 150;
 const int dumpServoNormalAngleBottomBot = 180;
 const int dumpServoDumpAngle = 0;
 const int dumpServoHoldAngle = 100;

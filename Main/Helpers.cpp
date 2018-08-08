@@ -95,13 +95,13 @@ void grabTeddy() {
 	if(onBottomBot) {
 		foundTeddyWithBottom();
 	} else {
-		motorWheel.stop();
 		// If we are on the 4th teddy, drive forward to push it into claw
 		if(numberOfTeddiesGrabbed == 3) {
-			delay(500);
 			motorWheel.forward(80);
-			delay(500);
+			delay(200);
 		}
+		motorWheel.stop();
+		
 	}
 	delay(400);
 	claw.grab();
@@ -285,8 +285,8 @@ void softReset() {
 	digitalWrite(communicationOut, HIGH);
 	resetBridge();
 	delay(500);
-	// setServo(leftStorageDumpServo, leftDumpServoResetPosition + dumpDeployAngle);
-	// setServo(rightStorageDumpServo, rightDumpServoResetPosition - dumpDeployAngle);
+	setServo(leftStorageDumpServo, leftDumpServoResetPosition + dumpDeployAngle / 2);
+	setServo(rightStorageDumpServo, rightDumpServoResetPosition - dumpDeployAngle / 2);
 }
 
 
