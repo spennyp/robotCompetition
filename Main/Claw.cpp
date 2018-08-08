@@ -5,10 +5,10 @@
 #include "Helpers.h"
 
 // TODO: Figure out what these 6 values should be
-const int clawServoOpenAngle = 170;
-const int clawServoGrabAngle = 30;
-const int dumpServoNormalAngleTopBot = 130;
-const int dumpServoNormalAngleBottomBot = 170;
+const int clawServoOpenAngle = 145;
+const int clawServoGrabAngle = 5;
+const int dumpServoNormalAngleTopBot = 140;
+const int dumpServoNormalAngleBottomBot = 180;
 const int dumpServoDumpAngle = 0;
 const int dumpServoHoldAngle = 100;
 const int dumpServoDumpTime = 2000;
@@ -76,7 +76,7 @@ bool Claw::poll(int numberOfTeddiesGrabbed) {
     if(topSwitch || bottomHallTriggered()) {
         motor.speed(winchMotor, 0);
         if(topSwitch && grabbed) {
-            if(numberOfTeddiesGrabbed == 3 || numberOfTeddiesGrabbed == 4 || numberOfTeddiesGrabbed == 5) { // Manually call from lifecycle once hit the cliff
+            if(numberOfTeddiesGrabbed == 3 || numberOfTeddiesGrabbed == 5) { // Manually call from lifecycle once hit the cliff
                 setServo(clawDumpServo, dumpServoHoldAngle);
             } else if (numberOfTeddiesGrabbed == 5) {
                 setServo(clawDumpServo, 80);

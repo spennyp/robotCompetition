@@ -6,7 +6,7 @@
 
 
 // ***CONFIGURATION, DETERMINES IF TOP BOT ONLY OR BOTH BOTS WILL BE RUNNING***
-bool topBotOnly = false;
+bool topBotOnly = true;
 
 
 // Initialization (helpers use these)
