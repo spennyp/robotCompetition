@@ -282,7 +282,8 @@ void softReset() {
 	digitalWrite(communicationOut, HIGH);
 	resetBridge();
 	delay(500);
-	activateDumper();
+	setServo(leftStorageDumpServo, leftDumpServoResetPosition + dumpDeployAngle / 2);
+	setServo(rightStorageDumpServo, rightDumpServoResetPosition - dumpDeployAngle / 2);
 }
 
 
