@@ -173,6 +173,8 @@ void thirdTeddyCode() {
 
 void fourthTeddyCode() {
 	delay(2000);
+	motorWheel.forward(160); // Drive fast off bot, was getting stuck
+	delay(200);
 	motorWheel.forward(90);
 	while(!foundCliff()) {}
 	motorWheel.stop();
