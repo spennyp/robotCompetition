@@ -3,77 +3,88 @@
 #include "MotorWheel.h"
 #include "Globals.h"
 
-const int defualtTurnSpeed = 150;
+const int defaultTurnSpeed = 150;
 
-MotorWheel::MotorWheel(MenuItem _motorSpeed, PID pid) : pid(pid) {
-	motorSpeed = _motorSpeed.value;
-	runWithPID = true;
+MotorWheel::MotorWheel(MenuItem speed, PID pid) : pid(pid) {
+	menuMotorSpeed = speed.value;
+	motorWheelSpeed = menuMotorSpeed;
+	runningWithPID = true;
 }
 
-// Default perapeter of 0, which runs at defualtTurnSpeed
-void MotorWheel::turnLeft(int angle, int speed, bool backup) {
-	runWithPID = false;
-	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
-	motor.speed(leftMotor, -turnSpeed);
-	if(backup) {
-		motor.speed(rightMotor, -turnSpeed);
-		delay(400);
+void MotorWheel::runWithPID(int speed) {
+	runningWithPID = true;
+	motorWheelSpeed = (speed == 0) ? menuMotorSpeed : speed;
+}
+
+// Default parameter of 0, which runs at defualtTurnSpeed
+void MotorWheel::turnLeft(int angle, bool backup) {
+	runningWithPID = false;
+	motor.speed(leftMotor, -defaultTurnSpeed);
+	if (backup) {
+		motor.speed(rightMotor, -defaultTurnSpeed);
+		delay(200);
 	}
-	motor.speed(rightMotor, turnSpeed);
-	delay(angle * delayPerDegreeTurn.value / 2.0); // Divided by 2.0 for finer adjustment
+	motor.speed(rightMotor, defaultTurnSpeed);
+	LCD.clear(); LCD.print(delayPerDegreeTurn.value);
+	delay(angle * delayPerDegreeTurn.value / 2.0); // Diveded by 2 which makes tuning more sensitive
 	stop();
 }
 
-// Default perapeter of 0, which runs at defualtTurnSpeed
-void MotorWheel::turnRight(int angle, int speed, bool backup) {
-	runWithPID = false;
-	int turnSpeed = (speed == 0) ? defualtTurnSpeed : speed;
-	motor.speed(rightMotor, -turnSpeed);
-	if(backup) {
-		motor.speed(leftMotor, -turnSpeed);
+// Default parameter of 0, which runs at defualtTurnSpeed
+void MotorWheel::turnRight(int angle, bool backup) {
+	runningWithPID = false;
+	motor.speed(rightMotor, -defaultTurnSpeed);
+	if (backup) {
+		motor.speed(leftMotor, -defaultTurnSpeed);
 		delay(200);
 	}
-	motor.speed(leftMotor, turnSpeed);
-	delay(angle * delayPerDegreeTurn.value / 2.0); // Divided by 2.0 for finer adjustment
+	motor.speed(leftMotor, defaultTurnSpeed);
+	LCD.clear(); LCD.print(delayPerDegreeTurn.value);
+	delay(angle * delayPerDegreeTurn.value / 2.0);
 	stop();
 }
 
 // Default perapeter of 0, which runs motorSpeed from the menu
 void MotorWheel::forward(int speed) {
-	runWithPID = false;
-	if(speed == 0) {
-		motor.speed(leftMotor, motorSpeed);
-		motor.speed(rightMotor, motorSpeed);
-	} else {
-		motor.speed(leftMotor, speed);
-		motor.speed(rightMotor, speed);
-	}
+	runningWithPID = false;
+	int forwardSpeed = (speed == 0) ? menuMotorSpeed : speed;
+
+	motor.speed(leftMotor, forwardSpeed);
+	motor.speed(rightMotor, forwardSpeed);
 }
 
-void MotorWheel::reverse() {
-	runWithPID = false;
-	motor.speed(leftMotor, -motorSpeed);
-	motor.speed(rightMotor, -motorSpeed);
+void MotorWheel::reverse(int speed) {
+	runningWithPID = false;
+	int reverseSpeed = (speed == 0) ? menuMotorSpeed : speed;
+
+	motor.speed(leftMotor, -reverseSpeed);
+	motor.speed(rightMotor, -reverseSpeed);
 }
 
 void MotorWheel::stop() {
-	runWithPID = false;
-	motor.stop(rightMotor);
-	motor.stop(leftMotor);
+	runningWithPID = false;
+	motor.stop_all();
 }
 
+void MotorWheel::hardStop(bool goingForward) {
+	if(goingForward) {
+		reverse(200);
+		delay(30);
+		stop();
+	} else {
+		forward(200);
+		delay(30);
+		stop();
+	}
+}
 
 // Lifecycle
 
 void MotorWheel::poll() {
-	if(runWithPID) {
+	if(runningWithPID) {
 		int err = pid.getError();
-		LCD.clear(); LCD.print("Speed: "); LCD.print(err);
-
 		// when err < 0 turns right. when err > 0 turns left
-		motor.speed(leftMotor, motorSpeed - err);
-		motor.speed(rightMotor, motorSpeed + err);
-	} 
+		motor.speed(leftMotor, motorWheelSpeed - err);
+		motor.speed(rightMotor, motorWheelSpeed + err);
+	}
 }
-
-

@@ -25,6 +25,7 @@ extern MenuItem delayPerDegreeTurn;
 extern MenuItem winchUpSpeed;
 extern MenuItem winchDownSpeed;
 extern MenuItem clawIRThreshold;
+extern MenuItem leftSideQRDThreshold;
 
 
 // Run Menu

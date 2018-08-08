@@ -6,9 +6,9 @@
 #include "MotorWheel.h"
 #include "Claw.h"
 
-Claw testClawInstance;
-MotorWheel testMotorWheel(motorSpeed, PID(proportionalGain, derivativeGain, pidThreshold));
-bool grabbed = false;
+extern Claw claw;
+extern MotorWheel motorWheel;
+bool grabbedInTest = false;
 
 
 // Diagnositcs
@@ -55,6 +55,11 @@ void sensorTest() {
 		testCliffQRD();
 	}
 
+	LCD.clear(); LCD.print("Side QRD"); delay(1000);
+	while(!startbutton()) {
+		testLeftSideQRD();
+	}
+
 	LCD.clear(); LCD.print("Claw IR "); LCD.setCursor(0, 1); LCD.print("Detector"); delay(1000);
 	while(!startbutton()) {
 		testClawIR();
@@ -84,6 +89,11 @@ void testCliffQRD() {
 	delay(100);
 }
 
+void testLeftSideQRD() {
+	LCD.clear(); LCD.print("SideQRD: "); LCD.print(analogRead(leftSideQRD));
+	delay(100);
+}
+
 void testClawIR() {
 	LCD.clear(); LCD.print("ClawIR: "); LCD.print(analogRead(clawIR));
 	delay(100);
@@ -104,18 +114,12 @@ void testCommunicationIn() {
 
 void systemTest() {
 	unsigned long prevLoopStartTime = millis();
-	testClawInstance = Claw();
 
 	LCD.clear(); LCD.print("System Test"); LCD.setCursor(0, 1); LCD.print("Warning motors!!"); delay(1000);
 
-	LCD.clear(); LCD.print("Testing Dumper"); delay(1000);
-	while(!startbutton()) {
-		testDump();
-	}
-
 	LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
-	testClawInstance.reset();
-	grabbed = false;
+	claw.reset();
+	grabbedInTest = false;
 	while(!startbutton()) {
 		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
@@ -123,18 +127,30 @@ void systemTest() {
 	}
 
 	LCD.clear(); LCD.print("Claw bridge"); LCD.setCursor(0, 1); LCD.print("drop position"); delay(1000);
-	testClawInstance = Claw();
+	claw = Claw();
 	while(!startbutton()) {
 		testClawBridgeDropPosition();
 	}
 
 	LCD.clear(); LCD.print("Test Claw Top"); delay(1000);
-	testClawInstance.switchToTopBot();
-	grabbed = false;
+	claw.switchToTopBot();
+	grabbedInTest = false;
 	while(!startbutton()) {
 		while (millis() - prevLoopStartTime < 10) {} //Regulate speed of the main loop to 10 ms
 		prevLoopStartTime = millis();
 		testClaw();
+	}
+
+	LCD.clear(); LCD.print("Reverse"); delay(1000);
+	motorWheel.reverse(200);
+	while(!startbutton()) {
+		delay(10);
+	}
+	motorWheel.stop();
+
+	LCD.clear(); LCD.print("Test Left Sweep"); delay(1000);
+	while(!startbutton()) {
+		testLeftSweep();
 	}
 
 	LCD.clear(); LCD.print("WARNING MOTORS"); LCD.setCursor(0, 1); LCD.print("in 3 sec"); delay(3000);
@@ -143,9 +159,19 @@ void systemTest() {
 		testTurning();
 	}
 
+	LCD.clear(); LCD.print("Hard stop"); LCD.setCursor(0, 1); LCD.print("start -> next"); delay(1000);
+	while(!startbutton()) {
+		testHardStop();
+	}
+
 	LCD.clear(); LCD.print("Testing Bridge"); delay(1000);
 	while(!startbutton()) {
 		testBridge();
+	}
+
+	LCD.clear(); LCD.print("Testing Dumper"); delay(1000);
+	while(!startbutton()) {
+		testDump();
 	}
 
 	LCD.clear(); LCD.print("Leaving system"); LCD.setCursor(0, 1); LCD.print("testing"); delay(1000);
@@ -164,20 +190,20 @@ void testDump() {
 void testClaw() {	
 	bool triggered = clawIRTriggered();
 	LCD.clear(); LCD.print("IR Triggered: "); LCD.print(triggered);
-	if(triggered && !grabbed) {
-		grabbed = true;
-		testClawInstance.grab();
+	if(triggered && !grabbedInTest) {
+		grabbedInTest = true;
+		claw.grab();
 	}
-	if(testClawInstance.poll()) {
-		grabbed = false;
+	if(claw.poll()) {
+		grabbedInTest = false;
 	}
 }
 
 void testClawBridgeDropPosition() {
-	testClawInstance.reset();
+	claw.reset();
 	delay(2000);
 	if(startbutton()) { return; }
-	testClawInstance.positionForBridgeDrop();
+	claw.positionForBridgeDrop();
 	delay(2000);
 }
 
@@ -192,10 +218,29 @@ void testBridge() {
 }
 
 void testTurning() {
-	testMotorWheel.turnRight(90);
+	motorWheel.turnRight(90);
 	delay(1000);
 	if(startbutton()) { return; }
-	testMotorWheel.turnLeft(90);
+	motorWheel.turnLeft(90);
+	delay(1000);
+}
+
+void testLeftSweep() {
+	while(!sweepLeft()) { delay(10); }
+	delay(5000);
+}
+
+void testHardStop() {
+	motorWheel.forward(200);
+	delay(1000);
+	if(startbutton()) { return; }
+	motorWheel.hardStop();
+	delay(1000);
+	if(startbutton()) { return; }
+	motorWheel.reverse(200);
+	delay(1000);
+	if(startbutton()) { return; }
+	motorWheel.hardStop(false);
 	delay(1000);
 }
 

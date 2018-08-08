@@ -22,7 +22,8 @@ MenuItem delayPerDegreeTurn = MenuItem("Delay/degT");
 MenuItem winchUpSpeed = MenuItem("winchUSpeed");
 MenuItem winchDownSpeed = MenuItem("winchDSpeed");
 MenuItem clawIRThreshold = MenuItem("clawIRThre");
-MenuItem configurationMenuItems[] = { motorSpeed, proportionalGain, derivativeGain, pidThreshold, cliffThreshold, delayPerDegreeTurn, winchUpSpeed, winchDownSpeed, clawIRThreshold };
+MenuItem leftSideQRDThreshold = MenuItem("LSideThres");
+MenuItem configurationMenuItems[] = { motorSpeed, proportionalGain, derivativeGain, pidThreshold, cliffThreshold, delayPerDegreeTurn, winchUpSpeed, winchDownSpeed, clawIRThreshold, leftSideQRDThreshold };
 
 void configurationMenu() {
 	LCD.clear(); LCD.home();
@@ -38,7 +39,7 @@ void configurationMenu() {
 		int setValue = knob(7) / 3;
 
 		// Multiplier for values that need to go higher
-		if(configurationMenuItems[menuIndex].name == cliffThreshold.name || configurationMenuItems[menuIndex].name == clawIRThreshold.name || configurationMenuItems[menuIndex].name == pidThreshold.name) {
+		if(configurationMenuItems[menuIndex].name == cliffThreshold.name || configurationMenuItems[menuIndex].name == clawIRThreshold.name || configurationMenuItems[menuIndex].name == pidThreshold.name || configurationMenuItems[menuIndex].name == leftSideQRDThreshold.name) {
 			setValue *= 3; 
 		}
 

@@ -64,6 +64,7 @@ int farTapeFollowQRD = 5;
 int nearTapeFollowQRD = 4;
 int cliffQRD = 3;
 int clawIR = 2;
+int leftSideQRD = 1;
 
 
 // Helpers

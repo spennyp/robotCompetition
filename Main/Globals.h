@@ -69,5 +69,6 @@ extern int farTapeFollowQRD;
 extern int nearTapeFollowQRD;
 extern int cliffQRD;
 extern int clawIR;
+extern int leftSideQRD;
 
 #endif

@@ -15,9 +15,7 @@ class Claw {
         void lower();
         void open();
         void close();
-        void dump(int numberOfTeddiesGrabbed);
         void positionForBridgeDrop();
-        void switchToTopBot();
         bool bottomBot;
         bool grabbed;
         friend void testClaw(); // These are for testing purposes
@@ -28,6 +26,8 @@ class Claw {
         void grab();
         void reset();
         bool poll(int numberOfTeddiesGrabbed = 0);
+        void dump(int numberOfTeddiesGrabbed); // Need to call this for 4th teddy
+        void switchToTopBot(); // TODO: Move back to privtae, temp for testing
 };
 
 #endif

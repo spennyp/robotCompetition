@@ -10,6 +10,7 @@ const int clawServoGrabAngle = 30;
 const int dumpServoNormalAngleTopBot = 130;
 const int dumpServoNormalAngleBottomBot = 170;
 const int dumpServoDumpAngle = 0;
+const int dumpServoHoldAngle = 100;
 const int dumpServoDumpTime = 2000;
 const int grabServoDumpReleaseTime = 1000;
 
@@ -75,8 +76,13 @@ bool Claw::poll(int numberOfTeddiesGrabbed) {
     if(topSwitch || bottomHallTriggered()) {
         motor.speed(winchMotor, 0);
         if(topSwitch && grabbed) {
-            dump(numberOfTeddiesGrabbed);
-            grabbed = false;
+            if(numberOfTeddiesGrabbed == 3 || numberOfTeddiesGrabbed == 4 || numberOfTeddiesGrabbed == 5) { // Manually call from lifecycle once hit the cliff
+                setServo(clawDumpServo, dumpServoHoldAngle);
+            } else if (numberOfTeddiesGrabbed == 5) {
+                setServo(clawDumpServo, 80);
+            } else {
+                dump(numberOfTeddiesGrabbed);
+            }
             return true;
         }
     }
@@ -107,9 +113,10 @@ void Claw::dump(int numberOfTeddiesGrabbed) {
         positionForBridgeDrop();
     } else if(numberOfTeddiesGrabbed == 2) {
         switchToTopBot();
-    } else {
+    } else if(numberOfTeddiesGrabbed != 4) {
         reset();
     }
+    grabbed = false;
 }
 
 void Claw::open() {

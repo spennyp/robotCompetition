@@ -8,12 +8,10 @@
 #else
 	#include "WProgram.h"
 #endif
+#include "MotorWheel.h"
+#include "Claw.h"
 
-// API
 extern void run();
-
-void reset();
-void runClawForBottomBot();
 void codeRed();
 
 #endif
