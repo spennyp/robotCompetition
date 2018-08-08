@@ -126,8 +126,8 @@ void detatchFromBottom() {
 // Returns true once left sensor goes off the edge
 bool sweepLeft() {
 	if(!leftSideQRDFoundCliff()) {
-		motor.speed(leftMotor, -130);
-		motor.speed(rightMotor, 150);
+		motor.speed(leftMotor, -140);
+		motor.speed(rightMotor, 160);
 		return false;
 	} else {
 		motorWheel.stop();
@@ -157,9 +157,9 @@ void firstTeddyCode() {
 }
 
 void thirdTeddyCode() {
-	motorWheel.forward(90);
+	motorWheel.forward(110);
 	while(!foundCliff()) {}
-	motorWheel.stop();
+	motorWheel.hardStop();
 	delay(500);
 	claw.dump(numberOfTeddiesGrabbed);
 	delay(500);
@@ -173,10 +173,7 @@ void thirdTeddyCode() {
 }
 
 void fourthTeddyCode() {
-	delay(2000);
-	motorWheel.forward(160); // Drive fast off bot, was getting stuck
-	delay(200);
-	motorWheel.forward(90);
+	motorWheel.forward(110);
 	while(!foundCliff()) {}
 	motorWheel.stop();
 	claw.dump(numberOfTeddiesGrabbed);
@@ -188,21 +185,10 @@ void fourthTeddyCode() {
 	delay(1000);
 	deployBridge();
 	delay(1000);
-
-	// Shake
-	motorWheel.forward(200);
-	delay(80);
-	motorWheel.reverse(200);
-	delay(80);
-	motorWheel.forward(200);
-	delay(80);
-	motorWheel.reverse(200);
-	delay(80);
-
 	motorWheel.stop(); 
 	delay(1000);
 	motorWheel.reverse(100);
-	delay(300);
+	delay(400);
 	motorWheel.stop();
 	delay(1000);
 	motorWheel.forward(250);
@@ -285,8 +271,8 @@ void softReset() {
 	digitalWrite(communicationOut, HIGH);
 	resetBridge();
 	delay(500);
-	setServo(leftStorageDumpServo, leftDumpServoResetPosition + dumpDeployAngle / 2);
-	setServo(rightStorageDumpServo, rightDumpServoResetPosition - dumpDeployAngle / 2);
+	// setServo(leftStorageDumpServo, leftDumpServoResetPosition + dumpDeployAngle / 2);
+	// setServo(rightStorageDumpServo, rightDumpServoResetPosition - dumpDeployAngle / 2);
 }
 
 
