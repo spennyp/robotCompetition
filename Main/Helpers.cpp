@@ -56,7 +56,7 @@ const int rightDumpServoDeployPosition = 2;
 
 
 // Reset constants
-const int leftBridgeServoResetPosition = 110;
+const int leftBridgeServoResetPosition = 120;
 const int rightBridgeServoResetPosition = 45;
 const int leftDumpServoResetPosition = 2;
 const int rightDumpServoResetPosition = 178;
@@ -220,6 +220,10 @@ void fourthTeddyCode() {
 	motorWheel.stop();
 	delay(1000);
 	deployBridge();
+	delay(500);
+    setServo(clawDumpServo, 0); // back powering claw dump servo
+	setServo(clawGrabServo, 145); // back powering claw grab servo
+
 	delay(1000);
 	motorWheel.forward(100);
 	delay(600);
