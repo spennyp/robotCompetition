@@ -51,17 +51,22 @@ bool rightTouchTriggered() {
 // Deploy constants
 const int leftBridgeServoDeployPosition = 0;
 const int rightBridgeServoDeployPosition = 150;
-const int dumpDeployAngle = 160;
+const int leftDumpServoDeployPosition = 178;
+const int rightDumpServoDeployPosition = 2;
+
 
 // Reset constants
 const int leftBridgeServoResetPosition = 110;
 const int rightBridgeServoResetPosition = 45;
-const int leftDumpServoResetPosition = 10;
-const int rightDumpServoResetPosition = 170;
+const int leftDumpServoResetPosition = 2;
+const int rightDumpServoResetPosition = 178;
 
 void activateDumper() {
-	setServo(leftStorageDumpServo, leftDumpServoResetPosition + dumpDeployAngle);
-	setServo(rightStorageDumpServo, rightDumpServoResetPosition - dumpDeployAngle);
+	setServo(leftStorageDumpServo, leftDumpServoDeployPosition);
+	setServo(rightStorageDumpServo, rightDumpServoDeployPosition);
+	delay(2000);
+	leftStorageDumpServo.servo.detach();
+	rightStorageDumpServo.servo.detach();
 }
 
 void resetDumper() {
@@ -128,8 +133,8 @@ void detatchFromBottom() {
 // Returns true once left sensor goes off the edge
 bool sweepLeft() {
 	if(!leftSideQRDFoundCliff()) {
-		motor.speed(leftMotor, -140);
-		motor.speed(rightMotor, 160);
+		motor.speed(leftMotor, -130);
+		motor.speed(rightMotor, 150);
 		return false;
 	} else {
 		motorWheel.stop();
@@ -137,15 +142,11 @@ bool sweepLeft() {
 	}
 }
 
-bool veerRight() {
-	if(!leftSideQRDFoundCliff()) {
-		motor.speed(leftMotor, 150);
-		motor.speed(rightMotor, 20);
-		return false;
-	} else {
-		motorWheel.stop();
-		return true;
-	}
+void sweepRight() {
+	motor.speed(leftMotor, 130);
+	motor.speed(rightMotor, -130);
+	while(analogRead(farTapeFollowQRD) < cliffThreshold.value) { delay(10); }
+	motorWheel.stop();
 }
 
 bool alignTouchSensors() {
@@ -157,17 +158,15 @@ bool alignTouchSensors() {
 	} else if(left && !right) {
 		motor.speed(leftMotor, -110);
 		motor.speed(rightMotor, -60);
-		delay(300);
-		motor.speed(leftMotor, 80);
-		motor.speed(rightMotor, 150);
+		delay(500);
+		motorWheel.stop();
 	} else if(!left && right) {
 		motor.speed(leftMotor, -60);
 		motor.speed(rightMotor, -110);
-		delay(300);
-		motor.speed(leftMotor, 150);
-		motor.speed(rightMotor, 80);
+		delay(500);
+		motorWheel.stop();
 	} else {
-		motorWheel.forward(100);
+		motorWheel.runWithPID(80);
 	}
 	return false;
 }
@@ -210,6 +209,17 @@ void fourthTeddyCode() {
 	while(!foundCliff()) {}
 	motorWheel.stop();
 	delay(1000);
+
+	// New
+	motorWheel.reverse(100); 
+	delay(600);
+	motorWheel.stop();
+	delay(1000);
+	motorWheel.forward(100);
+	delay(600);
+	motorWheel.stop();
+	delay(1000);
+
 	deployBridge();
 	delay(1000);
 	motorWheel.stop(); 
@@ -231,18 +241,23 @@ void fourthTeddyCode() {
 }
 
 void fifthTeddyCode() {
+	motor.speed(rightMotor, 170);
+	motor.speed(leftMotor, -170);
+	delay(600);
 	motorWheel.stop();
-	while(!veerRight()) { delay(10); }
-	motorWheel.runWithPID();
-	unsigned long startDumpTime = millis();
-	while(!rightTouchTriggered() && !leftTouchTriggered()) { 
-		motorWheel.poll(); 
+	delay(500);
+	motorWheel.reverse(150);
+	delay(600);
+	motorWheel.hardStop(false);
+	sweepRight();
+	delay(500);
+	motorWheel.runWithPID(100);
+	while(!leftTouchTriggered() && !rightTouchTriggered()) { 
+		motorWheel.poll();
 		delay(10);
 	}
 	motorWheel.stop();
-	delay(500);
-	while(!alignTouchSensors()) { delay(100); }
-	delay(1000);
+	delay(600);
 	activateDumper();
 	delay(20000);
 }

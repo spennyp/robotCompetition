@@ -120,23 +120,28 @@ void systemTest() {
 	LCD.clear(); LCD.print("System Test"); LCD.setCursor(0, 1); LCD.print("Warning motors!!"); delay(1000);
 
 	LCD.clear(); LCD.print("Test Dump Align"); delay(1000); // From 5th teddy
-
 	while(!startbutton()) {
 		resetDumper();
 		delay(1000);
 		setServo(clawDumpServo, 100);
 		claw.close();
 		delay(1000);
-		while(!veerRight()) { delay(10); }
-		motorWheel.runWithPID(80);
-		while(!rightTouchTriggered() && !leftTouchTriggered()) { 
-			motorWheel.poll(); 
+
+		motor.speed(rightMotor, 160);
+		motor.speed(leftMotor, -160);
+		delay(600);
+		motorWheel.reverse();
+		delay(600);
+		motorWheel.hardStop(false);
+		sweepRight();
+		delay(500);
+		motorWheel.runWithPID(100);
+		while(!leftTouchTriggered() && !rightTouchTriggered()) { 
+			motorWheel.poll();
 			delay(10);
 		}
 		motorWheel.stop();
-		delay(500);
-		while(!alignTouchSensors()) { delay(100); }
-		delay(1000);
+		delay(600);
 		activateDumper();
 		delay(5000);
 	}

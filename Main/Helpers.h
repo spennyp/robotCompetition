@@ -39,7 +39,7 @@ extern void grabTeddy();
 extern bool shouldDetatchFromBottomBot();
 extern void detatchFromBottom();
 extern bool sweepLeft();
-extern bool veerRight();
+extern void sweepRight();
 extern bool alignTouchSensors();
 
 
