@@ -125,7 +125,7 @@ bool shouldDetatchFromBottomBot() {
 
 void detatchFromBottom() {
 	onBottomBot = false;
-	motorWheel.forward(230);
+	motorWheel.forward(250);
 	delay(100);
 	motorWheel.forward(130);
 }
@@ -137,14 +137,18 @@ bool sweepLeft() {
 		motor.speed(rightMotor, 150);
 		return false;
 	} else {
+		// Hard stop
+		motor.speed(leftMotor, 200);
+		motor.speed(rightMotor, -200);
+		delay(30);
 		motorWheel.stop();
 		return true;
 	}
 }
 
 void sweepRight() {
-	motor.speed(leftMotor, 130);
-	motor.speed(rightMotor, -130);
+	motor.speed(leftMotor, 150);
+	motor.speed(rightMotor, -150);
 	while(analogRead(farTapeFollowQRD) < cliffThreshold.value) { delay(10); }
 	motorWheel.stop();
 }
@@ -190,7 +194,7 @@ void thirdTeddyCode() {
 	claw.dump(numberOfTeddiesGrabbed);
 	delay(500);
 	motorWheel.reverse(150);
-	delay(300);
+	delay(350);
 	motorWheel.stop();
 	delay(200);
 	while(!sweepLeft()) { delay(10); }
@@ -215,17 +219,10 @@ void fourthTeddyCode() {
 	delay(600);
 	motorWheel.stop();
 	delay(1000);
-	motorWheel.forward(100);
-	delay(600);
-	motorWheel.stop();
-	delay(1000);
-
 	deployBridge();
 	delay(1000);
-	motorWheel.stop(); 
-	delay(1000);
-	motorWheel.reverse(100);
-	delay(300);
+	motorWheel.forward(100);
+	delay(600);
 	motorWheel.stop();
 	delay(1000);
 	motorWheel.forward(250);
@@ -247,7 +244,7 @@ void fifthTeddyCode() {
 	motorWheel.stop();
 	delay(500);
 	motorWheel.reverse(150);
-	delay(600);
+	delay(650);
 	motorWheel.hardStop(false);
 	sweepRight();
 	delay(500);
