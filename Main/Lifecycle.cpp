@@ -32,7 +32,7 @@ void run() {
 			detatchFromBottom();
 		} 
 
-		LCD.clear(); LCD.print(numberOfTeddiesGrabbed);
+		LCD.clear(); LCD.print(analogRead(clawIR));
 		if(shouldGrabTeddy()) {
 			grabTeddy();
 		}

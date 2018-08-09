@@ -7,7 +7,7 @@
 // TODO: Figure out what these 6 values should be
 const int clawServoOpenAngle = 145;
 const int clawServoGrabAngle = 0;
-const int dumpServoNormalAngleTopBot = 150;
+const int dumpServoNormalAngleTopBot = 145;
 const int dumpServoNormalAngleBottomBot = 180;
 const int dumpServoDumpAngle = 0;
 const int dumpServoHoldAngle = 100;
@@ -45,9 +45,9 @@ void Claw::switchToTopBot() {
 void Claw::reset() {
     int normalAngle = (bottomBot) ? dumpServoNormalAngleBottomBot : dumpServoNormalAngleTopBot;
     if(bottomBot) {
+        close();
+        setServo(clawDumpServo, transitionAngle);
         if(!bottomHallTriggered()) {
-            close();
-            setServo(clawDumpServo, transitionAngle);
             delay(1000);
             lower();
             while(!bottomHallTriggered()) {} 

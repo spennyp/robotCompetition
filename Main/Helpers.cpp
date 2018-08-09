@@ -45,14 +45,12 @@ bool frontTouchSensorTriggered() {
 // Core Functionality
 
 // Deploy constants
-const int bottomBridgeServoDeployPosition = 150;
 const int leftBridgeServoDeployPosition = 0;
 const int rightBridgeServoDeployPosition = 150;
 const int dumpDeployAngle = 160;
 
 // Reset constants
-const int bottomBridgeServoResetPosition = 45;
-const int leftBridgeServoResetPosition = 100;
+const int leftBridgeServoResetPosition = 110;
 const int rightBridgeServoResetPosition = 45;
 const int leftDumpServoResetPosition = 10;
 const int rightDumpServoResetPosition = 170;
@@ -120,7 +118,7 @@ void detatchFromBottom() {
 	onBottomBot = false;
 	motorWheel.forward(230);
 	delay(100);
-	motorWheel.forward(150);
+	motorWheel.forward(130);
 }
 
 // Returns true once left sensor goes off the edge
@@ -157,14 +155,14 @@ void firstTeddyCode() {
 }
 
 void thirdTeddyCode() {
-	motorWheel.forward(110);
+	motorWheel.forward(130);
 	while(!foundCliff()) {}
 	motorWheel.hardStop();
 	delay(500);
 	claw.dump(numberOfTeddiesGrabbed);
 	delay(500);
 	motorWheel.reverse(150);
-	delay(350);
+	delay(300);
 	motorWheel.stop();
 	delay(200);
 	while(!sweepLeft()) { delay(10); }
@@ -188,7 +186,7 @@ void fourthTeddyCode() {
 	motorWheel.stop(); 
 	delay(1000);
 	motorWheel.reverse(100);
-	delay(400);
+	delay(300);
 	motorWheel.stop();
 	delay(1000);
 	motorWheel.forward(250);
@@ -199,7 +197,7 @@ void fourthTeddyCode() {
 	delay(200);
 	motorWheel.stop();
 	delay(2000);
-	motorWheel.forward(100);
+	motorWheel.forward(130);
 	claw.reset();
 }
 
@@ -207,10 +205,15 @@ void fifthTeddyCode() {
 	motorWheel.stop();
 	while(!veerRight()) { delay(10); }
 	motorWheel.runWithPID();
-	while(!frontTouchSensorTriggered()) { 
+	unsigned long startDumpTime = millis();
+	while(!frontTouchSensorTriggered() && (millis() - startDumpTime) < 6000) { 
 		motorWheel.poll(); 
 		delay(10);
 	}
+	motorWheel.stop();
+	motor.speed(rightMotor, 200);
+	motor.speed(leftMotor, -200);
+	delay(500);
 	motorWheel.stop();
 	delay(1000);
 	activateDumper();
