@@ -16,6 +16,8 @@ const int grabServoDumpReleaseTime = 1000;
 
 const int transitionAngle = 40;
 
+const int bottomDumpTranitionAngle = 150;
+
 
 // API
 
@@ -31,6 +33,8 @@ void Claw::grab() {
     grabbed = true;
     delay(500);
     if(bottomBot) {
+        setServo(clawDumpServo, bottomDumpTranitionAngle);
+        delay(200);
         raise();
         delay(500); // time to leave bottom limit switch before next poll
     }

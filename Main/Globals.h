@@ -59,7 +59,8 @@ extern ServoOutput transition;
 // Digital pins
 extern int topHall;
 extern int bottomHall;
-extern int frontTouchSensor;
+extern int rightTouchSensor;
+extern int leftTouchSensor;
 extern int communicationOut;
 extern int communicationIn;
 

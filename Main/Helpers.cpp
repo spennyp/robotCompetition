@@ -37,9 +37,13 @@ bool leftSideQRDFoundCliff() {
 	return (analogRead(leftSideQRD) > leftSideQRDThreshold.value);
 }
 
-bool frontTouchSensorTriggered() {
-    return !digitalRead(frontTouchSensor);
-} 
+bool leftTouchTriggered() {
+    return !digitalRead(leftTouchSensor);
+}
+
+bool rightTouchTriggered() {
+    return !digitalRead(rightTouchSensor);
+}
 
 
 // Core Functionality
@@ -144,6 +148,31 @@ bool veerRight() {
 	}
 }
 
+bool alignTouchSensors() {
+	bool left = leftTouchTriggered();
+	bool right = rightTouchTriggered();
+	if(left && right) {
+		motorWheel.stop();
+		return true;
+	} else if(left && !right) {
+		motor.speed(leftMotor, -110);
+		motor.speed(rightMotor, -60);
+		delay(300);
+		motor.speed(leftMotor, 80);
+		motor.speed(rightMotor, 150);
+	} else if(!left && right) {
+		motor.speed(leftMotor, -60);
+		motor.speed(rightMotor, -110);
+		delay(300);
+		motor.speed(leftMotor, 150);
+		motor.speed(rightMotor, 80);
+	} else {
+		motorWheel.forward(100);
+	}
+	return false;
+}
+
+
 
 // State helpers
 
@@ -206,15 +235,13 @@ void fifthTeddyCode() {
 	while(!veerRight()) { delay(10); }
 	motorWheel.runWithPID();
 	unsigned long startDumpTime = millis();
-	while(!frontTouchSensorTriggered() && (millis() - startDumpTime) < 6000) { 
+	while(!rightTouchTriggered() && !leftTouchTriggered()) { 
 		motorWheel.poll(); 
 		delay(10);
 	}
 	motorWheel.stop();
-	motor.speed(rightMotor, 200);
-	motor.speed(leftMotor, -200);
 	delay(500);
-	motorWheel.stop();
+	while(!alignTouchSensors()) { delay(100); }
 	delay(1000);
 	activateDumper();
 	delay(20000);

@@ -21,7 +21,8 @@ void systemDiagnostics() {
         Serial.println("");
         Serial.print("Top hall: "); Serial.println(topHallTriggered());
         Serial.print("Bottom hall: "); Serial.println(bottomHallTriggered());
-        Serial.print("Front Touch: "); Serial.println(frontTouchSensorTriggered());
+        Serial.print("Left Touch: "); Serial.println(rightTouchTriggered());
+		Serial.print("Right Touch: "); Serial.println(leftTouchTriggered());
         Serial.print("Far QRD: "); Serial.println(analogRead(farTapeFollowQRD));
         Serial.print("Near QRD: "); Serial.println(analogRead(nearTapeFollowQRD));
         Serial.print("Cliff QRD: "); Serial.println(analogRead(cliffQRD));
@@ -100,7 +101,8 @@ void testClawIR() {
 }
 
 void testTouchSensor() {
-	LCD.clear(); LCD.print("Touch Sensor: "); LCD.print(frontTouchSensorTriggered());
+	LCD.clear(); LCD.print("Left Touch: "); LCD.print(leftTouchTriggered());
+	LCD.setCursor(0, 1); LCD.print("Right Touch: "); LCD.print(rightTouchTriggered());
 	delay(100);
 }
 
@@ -116,6 +118,29 @@ void systemTest() {
 	unsigned long prevLoopStartTime = millis();
 
 	LCD.clear(); LCD.print("System Test"); LCD.setCursor(0, 1); LCD.print("Warning motors!!"); delay(1000);
+
+	LCD.clear(); LCD.print("Test Dump Align"); delay(1000); // From 5th teddy
+
+	while(!startbutton()) {
+		resetDumper();
+		delay(1000);
+		setServo(clawDumpServo, 100);
+		claw.close();
+		delay(1000);
+		while(!veerRight()) { delay(10); }
+		motorWheel.runWithPID(80);
+		while(!rightTouchTriggered() && !leftTouchTriggered()) { 
+			motorWheel.poll(); 
+			delay(10);
+		}
+		motorWheel.stop();
+		delay(500);
+		while(!alignTouchSensors()) { delay(100); }
+		delay(1000);
+		activateDumper();
+		delay(5000);
+	}
+
 
 	LCD.clear(); LCD.print("Test Claw Bottom"); delay(1000);
 	claw.reset();

@@ -18,7 +18,8 @@ extern bool topHallTriggered();
 extern bool bottomHallTriggered();
 extern bool foundCliff();
 extern bool leftSideQRDFoundCliff();
-extern bool frontTouchSensorTriggered();
+extern bool leftTouchTriggered();
+extern bool rightTouchTriggered();
 
 
 // Core Functionality
@@ -39,6 +40,7 @@ extern bool shouldDetatchFromBottomBot();
 extern void detatchFromBottom();
 extern bool sweepLeft();
 extern bool veerRight();
+extern bool alignTouchSensors();
 
 
 // State Helpers
