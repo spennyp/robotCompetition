@@ -18,4 +18,6 @@ For the first half of the course this robot sits ontop of the bottom bot. It's j
 * Deploys 2 plank bridges
 * Detatches from bottom bot
 
+Check out the bottom bot: https://github.com/spennyp/robotCompetitionBottomBot
+
 #### This code was being run on the TINAH board, which is esentially an Arduino Uno sheild
