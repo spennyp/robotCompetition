@@ -18,4 +18,4 @@ For the first half of the course this robot sits ontop of the bottom bot. It's j
 * Deploys 2 plank bridges
 * Detatches from bottom bot
 
-### This code was being run on the TINAH board, which is esentially an Arduino Uno sheild
+#### This code was being run on the TINAH board, which is esentially an Arduino Uno sheild
