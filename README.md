@@ -1,6 +1,6 @@
 # README #
 
-UBC Engineering Physics Autonomous Robots Annual Competition 2018 - Star Wars Rescue
+UBC Engineering Physics Autonomous Robots Annual Competition 2018 - Star Wars Rescue <\br>
 This robot placed 2nd overall
 
 ### What is this repository for? ###
