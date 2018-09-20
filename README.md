@@ -17,6 +17,7 @@ For the first half of the course this robot sits ontop of the bottom bot. It's j
 * Stoage system with dump capabilities
 * Deploys 2 plank bridges
 * Detatches from bottom bot
+* Full diagonistics mode to insure all systems are working
 
 Check out the bottom bot: https://github.com/spennyp/robotCompetitionBottomBot
 
