@@ -1,6 +1,7 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+UBC Engineering Physics Autonomous Robots Annual Competition 2018 - Star Wars Rescue
+This robot placed 2nd overall
 
 ### What is this repository for? ###
 
