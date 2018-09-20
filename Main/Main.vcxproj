@@ -103,8 +103,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MenuItem.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="MotorWheel.h" />
+    <ClInclude Include="PID.h" />
     <ClInclude Include="__vm\.Main.vsarduino.h" />
     <ClInclude Include="__vm\.Menu.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MenuItem.cpp" />
+    <ClCompile Include="MotorWheel.cpp" />
+    <ClCompile Include="PID.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

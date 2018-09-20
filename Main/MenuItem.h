@@ -9,15 +9,14 @@
 	#include "WProgram.h"
 #endif
 
-class MenuItem
-{
- public:
-	String    Name;
-	uint16_t  Value;
-	uint16_t* EEPROMAddress;
-	static uint16_t MenuItemCount;
-	MenuItem(String name);
-	void Save();
+class MenuItem {
+	public:
+		MenuItem(String name);
+		static uint16_t menuItemCount;
+		String name;
+		uint16_t value;
+		uint16_t* EEPROMAddress;
+		void save();
 };
 
 #endif
